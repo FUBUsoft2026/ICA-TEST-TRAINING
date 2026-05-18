@@ -82,7 +82,11 @@
             </div>
             <h2 id="question-text" class="question-text">Loading...</h2>
             <div id="options-container" class="options-list"></div>
-            <button id="next-btn" class="action-btn hidden">Next Question </button>
+			<div style="display: flex; gap: 12px; margin-top: 24px;">
+			  <button id="prev-btn" class="action-btn secondary hidden" style="margin-top: 0;">Précédent</button>
+			  <button id="next-btn" class="action-btn" style="margin-top: 0;">Question suivante</button>
+			</div>
+
         </div>
         <div id="result-screen" class="hidden text-center">
             <h2 id="result-title" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 8px;">End of the Test</h2>
@@ -112,6 +116,8 @@
 
 
     <script>
+		const prevBtn = document.getElementById('prev-btn');
+
         const originalQuizData = [
             { theme: "Circulation Aérienne", question: "1. La clairance initiale au départ comprend :", options: ["L’autorisation de roulage et de décollage ;", "La clairance de départ et la clairance de décollage ;", "L’autorisation de décollage et le SID ;", "La clairance de départ et la clairance de route ;"], correct: 3 },
             { theme: "Circulation Aérienne", question: "2. La clairance initiale d’arrivée doit comprendre entre autre :", options: ["l’altitude de l’aérodrome d’arrivée ;", "l’altitude minimale de secteur ;", "la piste en service et la procédure prévue ;", "la piste en service et les procédures disponibles."], correct: 2 },
@@ -329,6 +335,7 @@
         const questionTextEl = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const nextBtn = document.getElementById('next-btn');
+		const prevBtn = document.getElementById('prev-btn');
         const progressBar = document.getElementById('progress-bar');
         const finalScoreEl = document.getElementById('final-score');
         const reviewBtn = document.getElementById('review-btn');
@@ -342,25 +349,25 @@
             return [...array].sort(() => 0.5 - Math.random());
         }
 
-        function startQuiz() {
-            // Sélectionne un échantillon de questions parmi la banque globale
-            quizData = shuffle(originalQuizData).slice(0, QUESTIONS_TO_PLAY);
-            currentQuestionIndex = 0;
-            score = 0;
-            userErrors = []; 
-            timeRemaining = TOTAL_TIME_SECONDS;
-            isQuizActive = true;
-            
-            quizScreen.classList.remove('hidden');
-            resultScreen.classList.add('hidden');
-            reviewScreen.classList.add('hidden');
-            cheatScreen.classList.add('hidden');
-            mainContainer.classList.remove('large');
-            
-            clearInterval(timerInterval);
-            startTimer();
-            loadQuestion();
-        }
+		function startQuiz() {
+		  quizData = shuffle(originalQuizData).slice(0, QUESTIONS_TO_PLAY);
+		  quizData.forEach(q => q.userSelected = null); // Stocke le choix de l'utilisateur
+		  currentQuestionIndex = 0;
+		  score = 0;
+		  userErrors = []; 
+		  timeRemaining = TOTAL_TIME_SECONDS;
+		  isQuizActive = true;
+		  
+		  quizScreen.classList.remove('hidden');
+		  resultScreen.classList.add('hidden');
+		  reviewScreen.classList.add('hidden');
+		  cheatScreen.classList.add('hidden');
+		  mainContainer.classList.remove('large');
+		  
+		  clearInterval(timerInterval);
+		  startTimer();
+		  loadQuestion();
+		}
 
         function startTimer() {
             timerInterval = setInterval(() => {
@@ -390,73 +397,99 @@
         }
 
         // 7. CHARGEMENT D'UNE QUESTION À L'ÉCRAN
-        function loadQuestion() {
-            answered = false;
-            nextBtn.classList.add('hidden');
-            optionsContainer.innerHTML = '';
+		function loadQuestion() {
+		  optionsContainer.innerHTML = '';
+		  const currentQuiz = quizData[currentQuestionIndex];
+		  questionNumberEl.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+		  questionThemeEl.innerText = currentQuiz.theme;
+		  questionTextEl.innerText = currentQuiz.question;
+		  progressBar.style.width = `${(currentQuestionIndex / quizData.length) * 100}%`;
+		
+		  // Gestion de la visibilité du bouton Précédent
+		  if (currentQuestionIndex === 0) {
+		    prevBtn.classList.add('hidden');
+		  } else {
+		    prevBtn.classList.remove('hidden');
+		  }
+		
+		  // Texte du bouton Suivant sur la dernière question
+		  if (currentQuestionIndex === quizData.length - 1) {
+		    nextBtn.innerText = "Terminer le test";
+		  } else {
+		    nextBtn.innerText = "Question suivante";
+		  }
+		
+		  // Génération des options
+		  currentQuiz.options.forEach((option, index) => {
+		    const button = document.createElement('button');
+		    button.innerText = option;
+		    button.className = "option-btn";
+		    
+		    // Rétablir le choix si l'utilisateur revient sur la question
+		    if (currentQuiz.userSelected === index) {
+		      button.style.borderColor = "#6366f1";
+		      button.style.backgroundColor = "rgba(99, 102, 241, 0.2)";
+		    }
+		
+		    button.addEventListener('click', () => selectOption(index));
+		    optionsContainer.appendChild(button);
+		  });
+		}
 
-            const currentQuiz = quizData[currentQuestionIndex];
-            questionNumberEl.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
-            questionThemeEl.innerText = currentQuiz.theme;
-            questionTextEl.innerText = currentQuiz.question;
-            progressBar.style.width = `${(currentQuestionIndex / quizData.length) * 100}%`;
-
-            // Injection dynamique des boutons d'options
-            currentQuiz.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.innerText = option;
-                button.className = "option-btn";
-                button.addEventListener('click', () => selectOption(index, button));
-                optionsContainer.appendChild(button);
-            });
-        }
-
-        function selectOption(selectedIndex, selectedButton) {
-            if (answered) return;
-            answered = true;
-
-            const currentQuiz = quizData[currentQuestionIndex];
-            const correctIndex = currentQuiz.correct;
-            const buttons = optionsContainer.querySelectorAll('.option-btn');
-
-            // Colore visuellement les choix (Vert = correct, Rouge = erreur)
-            buttons.forEach((btn, idx) => {
-                btn.disabled = true;
-                if (idx === correctIndex) {
-                    btn.classList.add('correct');
-                } else if (idx === selectedIndex) {
-                    btn.classList.add('wrong');
-                } else {
-                    btn.classList.add('neutral');
-                }
-            });
-
-            if (selectedIndex === correctIndex) {
-                score++;
-            } else {
-                // Sauvegarde de l'erreur pour la révision finale
-                userErrors.push({
-                    question: currentQuiz.question,
-                    theme: currentQuiz.theme,
-                    options: currentQuiz.options,
-                    correct: correctIndex,
-                    selected: selectedIndex
-                });
-            }
-            nextBtn.classList.remove('hidden');
-        }
-
-        nextBtn.addEventListener('click', () => {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < quizData.length) { 
-                loadQuestion(); 
-            } else { 
-                isQuizActive = false; 
-                clearInterval(timerInterval); 
-                showResults(false); 
-            }
-        });
-
+		function selectOption(selectedIndex) {
+		  const currentQuiz = quizData[currentQuestionIndex];
+		  currentQuiz.userSelected = selectedIndex; // Sauvegarde le nouvel index choisi
+		
+		  // Met à jour visuellement le bouton sélectionné sans bloquer les autres
+		  const buttons = optionsContainer.querySelectorAll('.option-btn');
+		  buttons.forEach((btn, idx) => {
+		    if (idx === selectedIndex) {
+		      btn.style.borderColor = "#6366f1";
+		      btn.style.backgroundColor = "rgba(99, 102, 241, 0.2)";
+		    } else {
+		      btn.style.borderColor = "#334155";
+		      btn.style.backgroundColor = "#1e293b";
+		    }
+		  });
+		}
+		nextBtn.addEventListener('click', () => {
+		  if (currentQuestionIndex < quizData.length - 1) { 
+		    currentQuestionIndex++;
+		    loadQuestion(); 
+		  } else { 
+		    // Boîte de dialogue de confirmation avant la soumission finale
+		    const confirmSubmit = confirm("Êtes-vous sûr de vouloir terminer le test et soumettre vos réponses ?");
+		    if (!confirmSubmit) return; // Annule l'action si l'utilisateur clique sur "Annuler"
+		
+		    // FIN DU QUIZ : Traitement global des scores et erreurs
+		    score = 0;
+		    userErrors = [];
+		    
+		    quizData.forEach(q => {
+		      if (q.userSelected === q.correct) {
+		        score++;
+		      } else {
+		        userErrors.push({
+		          question: q.question,
+		          theme: q.theme,
+		          options: q.options,
+		          correct: q.correct,
+		          selected: q.userSelected !== null ? q.userSelected : -1
+		        });
+		      }
+		    });
+		
+		    isQuizActive = false; 
+		    clearInterval(timerInterval); 
+		    showResults(false); 
+		  }
+		});	
+		prevBtn.addEventListener('click', () => {
+		  if (currentQuestionIndex > 0) {
+		    currentQuestionIndex--;
+		    loadQuestion();
+		  }
+		});
         function showResults(isTimeUp) {
             progressBar.style.width = '100%';
             quizScreen.classList.add('hidden');
