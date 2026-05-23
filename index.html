@@ -525,8 +525,89 @@ async function showResults(isTimeUp) {
         date: new Date().toLocaleString('fr-FR')
     };
  // PENSEZ À REPRENDRE ET PLACER VOS PARAMETRES EMAILJS CI-DESSOUS
- emailjs.send("service_ljd8kpd", "template_1rfg2o8", variablesEmail).then(() => console.log("Rapport candidat envoyé avec succès !")).catch((err) => console.error("Échec de l'envoi EmailJS :", err));}document.addEventListener('visibilitychange', () => {if (document.hidden && isQuizActive) {clearInterval(timerInterval);quizScreen.classList.add('hidden');cheatScreen.classList.remove('hidden');timeRemaining = Math.max(0, timeRemaining - 300);}});resumeBtn.addEventListener('click', () => {if (timeRemaining <= 0) {handleTimeUp();} else {cheatScreen.classList.add('hidden');quizScreen.classList.remove('hidden');startTimer();}});document.addEventListener('contextmenu', (e) => e.preventDefault());document.addEventListener('copy', (e) => e.preventDefault());window.addEventListener('beforeunload', (e) => {if (isQuizActive) {e.preventDefault();e.returnValue = "Attention, rafraîchir cette page annulera votre session de test.";}});reviewBtn.addEventListener('click', () => {resultScreen.classList.add('hidden');reviewScreen.classList.remove('hidden');mainContainer.classList.add('large');errorsListEl.innerHTML = '';userErrors.forEach((error, idx) => {const card = document.createElement('div');card.className = "error-card";card.innerHTML = <div class="card-top">  <span class="badge-err">Erreur #${idx + 1}</span> <span class="badge-theme">${error.theme}</span>  </div>  <p style="font-size: 0.875rem; font-weight: 600; color: #fff; line-height: 1.4;">${error.question}</p>  <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">  <div class="feedback-box"><span class="feedback-title">Votre réponse :</span>${error.selected !== -1 ? error.options[error.selected] : "Aucune réponse"}</div>  <div class="feedback-box correct-ans"><span class="feedback-title">Réponse correcte :</span>${error.options[error.correct]}</div>  </div>;errorsListEl.appendChild(card);});});backToResultsBtn.addEventListener('click', () => {reviewScreen.classList.add('hidden');resultScreen.classList.remove('hidden');mainContainer.classList.remove('large');});restartBtn.addEventListener('click', startQuiz);startQuiz();
-    </script>
+ // Envoi du rapport par EmailJS
+emailjs.send("service_ljd8kpd", "template_1rfg2o8", variablesEmail)
+    .then(() => console.log("Rapport candidat envoyé avec succès !"))
+    .catch((err) => console.error("Échec de l'envoi EmailJS :", err));
+
+// Détection du changement d'onglet (Anti-triche)
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden && isQuizActive) {
+        clearInterval(timerInterval);
+        quizScreen.classList.add('hidden');
+        cheatScreen.classList.remove('hidden');
+        // Pénalité de 5 minutes (300 secondes)
+        timeRemaining = Math.max(0, timeRemaining - 300); 
+    }
+});
+
+// Reprise du quiz après avertissement de triche
+resumeBtn.addEventListener('click', () => {
+    if (timeRemaining <= 0) {
+        handleTimeUp(); // Fin du temps si la pénalité a épuisé le chrono
+    } else {
+        cheatScreen.classList.add('hidden');
+        quizScreen.classList.remove('hidden');
+        startTimer();
+    }
+});
+
+// Sécurité : Blocage du clic droit et du copier/coller
+document.addEventListener('contextmenu', (e) => e.preventDefault());
+document.addEventListener('copy', (e) => e.preventDefault());
+
+// Alerte avant de quitter ou rafraîchir la page
+window.addEventListener('beforeunload', (e) => {
+    if (isQuizActive) {
+        e.preventDefault();
+        e.returnValue = "Attention, rafraîchir cette page annulera votre session de test.";
+    }
+});
+
+// Affichage de la revue des erreurs (Template littéral corrigé)
+reviewBtn.addEventListener('click', () => {
+    resultScreen.classList.add('hidden');
+    reviewScreen.classList.remove('hidden');
+    mainContainer.classList.add('large');
+    errorsListEl.innerHTML = '';
+
+    userErrors.forEach((error, idx) => {
+        const card = document.createElement('div');
+        card.className = "error-card";
+        // Utilisation correcte des backticks (`) pour le HTML multi-ligne
+        card.innerHTML = `
+            <div class="card-top">
+                <span class="badge-err">Erreur #${idx + 1}</span> 
+                <span class="badge-theme">${error.theme}</span>
+            </div>
+            <p style="font-size: 0.875rem; font-weight: 600; color: #fff; line-height: 1.4;">${error.question}</p>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+                <div class="feedback-box">
+                    <span class="feedback-title">Votre réponse :</span>
+                    ${error.selected !== -1 ? error.options[error.selected] : "Aucune réponse"}
+                </div>
+                <div class="feedback-box correct-ans">
+                    <span class="feedback-title">Réponse correcte :</span>
+                    ${error.options[error.correct]}
+                </div>
+            </div>`;
+        errorsListEl.appendChild(card);
+    });
+});
+
+// Retour à l'écran des résultats
+backToResultsBtn.addEventListener('click', () => {
+    reviewScreen.classList.add('hidden');
+    resultScreen.classList.remove('hidden');
+    mainContainer.classList.remove('large');
+});
+
+// Recommencer le quiz
+restartBtn.addEventListener('click', startQuiz);
+
+// Lancement initial du quiz
+startQuiz();
+   </script>
 </body>
 </html>
 
