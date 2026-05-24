@@ -160,19 +160,28 @@
         const errorsListEl = document.getElementById('errors-list');
         const globalTimerEl = document.getElementById('global-timer');
 
-        // Récupération de l'IP dès le départ via l'API JSON officielle
-        async function recupererIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                if (response.ok) {
-                    const data = await response.json();
-                    ipPublique = data.ip;
-                }
-            } catch (error) {
-                console.error("Erreur lors de la récupération de l'IP :", error);
-            }
-        }
-        recupererIP();
+// 1. Déclaration globale de la variable (déjà présente dans votre code)
+let ipPublique = "Inconnue (Bloquée/Hors-ligne)"; [cite: 228]
+
+// 2. Fonction asynchrone corrigée
+async function recupererIP() {
+    try {
+        // Ajout explicite de ?format=json pour activer le support CORS d'Ipify
+        const response = await fetch('https://api.ipify.org?format=json');
+        
+        if (!response.ok) throw new Error('Erreur réseau');
+        
+        const data = await response.json();
+        ipPublique = data.ip; // Stockage de l'adresse IP [cite: 231]
+        console.log("Votre IP publique a été récupérée :", ipPublique);
+    } catch (error) {
+        console.error("Erreur lors de la récupération de l'IP :", error);
+        // L'application ne plante pas, ipPublique conserve sa valeur par défaut [cite: 228]
+    }
+}
+
+// 3. Appel au chargement du script
+recupererIP(); [cite: 232]
 
         function shuffle(array) {
             return [...array].sort(() => 0.5 - Math.random());
