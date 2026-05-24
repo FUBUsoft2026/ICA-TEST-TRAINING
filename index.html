@@ -473,19 +473,19 @@ prevBtn.addEventListener('click', () => {
         loadQuestion();
     }
 });
-async function showResults(isTimeUp) {
-    progressBar.style.width = '100%';
-    quizScreen.classList.add('hidden');
-    cheatScreen.classList.add('hidden');
-    resultScreen.classList.remove('hidden');    
-    const chaineScoreFinal = `${score} / ${quizData.length}`;
-    finalScoreEl.innerText = chaineScoreFinal;    
-    if (userErrors.length === 0) {
-        reviewBtn.classList.add('hidden');
-    } else {
-        reviewBtn.classList.remove('hidden');
+async function recupererIP() {
+    try {
+        const response = await fetch('https://ipify.org');
+        if (!response.ok) throw new Error('Erreur réseau');
+        
+        const data = await response.json();
+        console.log("Votre IP est :", data.ip);
+        // Ajoutez ici votre logique pour passer à la question suivante
+    } catch (erreur) {
+        console.error("Erreur lors de la récupération de l'IP :", examen);
     }
 }
+
 
 // 1. Déclaration de la variable au niveau global
 let ipPublique = "Inconnue (Bloquée/Hors-ligne)";
