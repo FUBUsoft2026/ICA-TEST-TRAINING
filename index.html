@@ -478,17 +478,15 @@ async function showResults(isTimeUp) {
     progressBar.style.width = '100%';
     quizScreen.classList.add('hidden');
     cheatScreen.classList.add('hidden');
-    resultScreen.classList.remove('hidden');
-    
+    resultScreen.classList.remove('hidden');    
     const chaineScoreFinal = `${score} / ${quizData.length}`;
-    finalScoreEl.innerText = chaineScoreFinal;
-    
+    finalScoreEl.innerText = chaineScoreFinal;    
     if (userErrors.length === 0) {
         reviewBtn.classList.add('hidden');
     } else {
         reviewBtn.classList.remove('hidden');
     }
-    
+}
     let ipPublique = "Inconnue (Bloquée/Hors-ligne)";
     try {
         // Correction de l'URL API
