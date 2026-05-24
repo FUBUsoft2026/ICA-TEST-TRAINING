@@ -480,11 +480,34 @@ async function recupererIP() {
         
         const data = await response.json();
         console.log("Votre IP est :", data.ip);
-        // Ajoutez ici votre logique pour passer à la question suivante
+        window.userIP = data.ip; // Optionnel : sauvegarde de l'IP
+
     } catch (erreur) {
-        console.error("Erreur lors de la récupération de l'IP :", examen);
+        console.error("Erreur lors de la récupération de l'IP :", erreur);
+    } finally {
+        // Cette ligne s'exécute QUOI QU'IL ARRIVE pour ne pas bloquer l'utilisateur
+        passerALaSuite();
     }
 }
+
+function passerALaSuite() {
+    // 1. Cibler les éléments HTML de votre page
+    const cheatScreen = document.getElementById('cheat-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+
+    // 2. Gestion de l'affichage (on retire/ajoute la classe 'hidden')
+    if (cheatScreen) {
+        cheatScreen.classList.add('hidden'); // On s'assure que cet écran est caché
+    }
+    
+    if (quizScreen) {
+        quizScreen.classList.remove('hidden'); // On affiche enfin le questionnaire
+        console.log("Écran du quiz affiché avec succès !");
+    } else {
+        console.warn("L'élément #quiz-screen n'a pas été trouvé dans le HTML.");
+    }
+}
+
 
 
 // 1. Déclaration de la variable au niveau global
