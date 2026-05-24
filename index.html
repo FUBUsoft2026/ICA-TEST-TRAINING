@@ -1,642 +1,433 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Us by Us Soft Concept</title>
-<style>
-/* BASE & DESIGN GENERAL */
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-body { background-color: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; color: #f1f5f9; -webkit-user-select: none; user-select: none; }
-/* CONTENEUR PRINCIPAL */
-.container { width: 100%; max-width: 440px; background-color: #1e293b; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); padding: 24px; border: 1px solid #334155; transition: max-width 0.3s ease; }
-.container.large { max-width: 680px; }
-.hidden { display: none !important; }
-/* CHRONOMETRE */
-.timer-box { displaasyncy: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; background-color: rgba(69, 26, 3, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 8px 16px; color: #fbbf24; font-family: monospace; font-size: 1.125rem; font-weight: bold; }
-.timer-box.alert { background-color: rgba(127, 29, 29, 0.4); border-color: rgba(239, 68, 68, 0.5); color: #f87171; }
-/* BARRE DE PROGRESSION */
-.progress-bg { width: 100%; background-color: #334155; border-radius: 9999px; height: 8px; margin-bottom: 24px; }
-.progress-bar { background-color: #6366f1; height: 8px; border-radius: 9999px; width: 0%; transition: width 0.3s ease; }
-/* EN-TETE QUESTION */
-.question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.q-number { font-size: 0.75rem; font-weight: 600; color: #818cf8; text-transform: uppercase; letter-spacing: 0.05em; }
-.q-theme { font-size: 0.75rem; font-weight: 500; color: #94a3b8; max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
-.question-text { font-size: 1.125rem; font-weight: bold; margin-bottom: 24px; color: #ffffff; line-height: 1.4; }
-/* BOUTONS OPTIONS */
-.options-list { display: flex; flex-direction: column; gap: 12px; }
-.option-btn { width: 100%; text-align: left; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background-color: #1e293b; color: #cbd5e1; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: background 0.15s ease; -webkit-tap-highlight-color: transparent; }
-.option-btn:active { transform: scale(0.99); }
-/* ETATS DE VALIDATION */
-.option-btn.correct { border-color: #22c55e; background-color: rgba(20, 83, 45, 0.4); color: #4ade80; }
-.option-btn.wrong { border-color: #ef4444; background-color: rgba(127, 29, 29, 0.4); color: #f87171; }
-.option-btn.neutral { border-color: #1e293b; background-color: rgba(30, 41, 59, 0.4); color: #64748b; }
-/* BOUTON ACTION PRINCIPAL */
-.action-btn { width: 100%; margin-top: 24px; background-color: #4f46e5; color: #ffffff; font-weight: 600; padding: 12px 16px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); font-size: 1rem; }
-.action-btn:hover { background-color: #4338ca; }
-.action-btn.secondary { background-color: #ffffff; color: #0f172a; }
-.action-btn.muted { background-color: #334155; color: #ffffff; }
-.action-btn.danger { background-color: #dc2626; }
-/* ECRANS SPECIFIQUES */
-.text-center { text-align: center; }
-.score-box { background-color: #0f172a; border-radius: 12px; padding: 16px; margin-bottom: 24px; border: 1px solid #334155; }
-.score-title { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 4px; }
-.score-val { font-size: 2.25rem; font-weight: 800; color: #818cf8; }
-/* REVISION DES ERREURS */
-.errors-container { display: flex; flex-direction: column; gap: 24px; max-height: 55vh; overflow-y: auto; padding-right: 4px; margin-top: 16px; text-align: left; }
-.error-card { background-color: rgba(15, 23, 42, 0.6); border-radius: 12px; padding: 16px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 12px; }
-.card-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; font-size: 0.75rem; }
-.badge-err { color: #f59e0b; font-weight: bold; text-transform: uppercase; }
-.badge-theme { background-color: #1e293b; padding: 4px 8px; border-radius: 4px; color: #94a3b8; }
-.feedback-box { font-size: 0.75rem; padding: 12px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3); background-color: rgba(127, 29, 29, 0.2); color: #fca5a5; }
-.feedback-box.correct-ans { border-color: rgba(34, 197, 94, 0.3); background-color: rgba(20, 83, 45, 0.2); color: #86efac; }
-.feedback-title { font-weight: bold; display: block; margin-bottom: 2px; }
-</style>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  // Initialisation avec votre clé publique fournie par EmailJS
-  emailjs.init({ publicKey: "HRODpKSxHCmOnzgGW" });
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Us by Us Soft Concept</title>
+    <style>
+        /* BASE & DESIGN GENERAL */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; color: #f1f5f9; -webkit-user-select: none; user-select: none; }
+        
+        /* CONTENEUR PRINCIPAL */
+        .container { width: 100%; max-width: 440px; background-color: #1e293b; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); padding: 24px; border: 1px solid #334155; transition: max-width 0.3s ease; }
+        .container.large { max-width: 680px; }
+        .hidden { display: none !important; }
+        
+        /* CHRONOMETRE */
+        .timer-box { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; background-color: rgba(69, 26, 3, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 8px 16px; color: #fbbf24; font-family: monospace; font-size: 1.125rem; font-weight: bold; }
+        .timer-box.alert { background-color: rgba(127, 29, 29, 0.4); border-color: rgba(239, 68, 68, 0.5); color: #f87171; }
+        
+        /* BARRE DE PROGRESSION */
+        .progress-bg { width: 100%; background-color: #334155; border-radius: 9999px; height: 8px; margin-bottom: 24px; }
+        .progress-bar { background-color: #6366f1; height: 8px; border-radius: 9999px; width: 0%; transition: width 0.3s ease; }
+        
+        /* EN-TETE QUESTION */
+        .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .q-number { font-size: 0.75rem; font-weight: 600; color: #818cf8; text-transform: uppercase; letter-spacing: 0.05em; }
+        .q-theme { font-size: 0.75rem; font-weight: 500; color: #94a3b8; max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+        .question-text { font-size: 1.125rem; font-weight: bold; margin-bottom: 24px; color: #ffffff; line-height: 1.4; }
+        
+        /* BOUTONS OPTIONS */
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { width: 100%; text-align: left; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; background-color: #1e293b; color: #cbd5e1; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: background 0.15s ease; -webkit-tap-highlight-color: transparent; }
+        .option-btn:active { transform: scale(0.99); }
+        
+        /* ETATS DE VALIDATION */
+        .option-btn.correct { border-color: #22c55e; background-color: rgba(20, 83, 45, 0.4); color: #4ade80; }
+        .option-btn.wrong { border-color: #ef4444; background-color: rgba(127, 29, 29, 0.4); color: #f87171; }
+        .option-btn.neutral { border-color: #1e293b; background-color: rgba(30, 41, 59, 0.4); color: #64748b; }
+        
+        /* BOUTON ACTION PRINCIPAL */
+        .action-btn { width: 100%; margin-top: 24px; background-color: #4f46e5; color: #ffffff; font-weight: 600; padding: 12px 16px; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); font-size: 1rem; }
+        .action-btn:hover { background-color: #4338ca; }
+        .action-btn.secondary { background-color: #ffffff; color: #0f172a; }
+        .action-btn.muted { background-color: #334155; color: #ffffff; }
+        .action-btn.danger { background-color: #dc2626; }
+        
+        /* ECRANS SPECIFIQUES */
+        .text-center { text-align: center; }
+        .score-box { background-color: #0f172a; border-radius: 12px; padding: 16px; margin-bottom: 24px; border: 1px solid #334155; }
+        .score-title { font-size: 0.75rem; color: #94a3b8; display: block; margin-bottom: 4px; }
+        .score-val { font-size: 2.25rem; font-weight: 800; color: #818cf8; }
+        
+        /* REVISION DES ERREURS */
+        .errors-container { display: flex; flex-direction: column; gap: 24px; max-height: 55vh; overflow-y: auto; padding-right: 4px; margin-top: 16px; text-align: left; }
+        .error-card { background-color: rgba(15, 23, 42, 0.6); border-radius: 12px; padding: 16px; border: 1px solid #334155; display: flex; flex-direction: column; gap: 12px; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; font-size: 0.75rem; }
+        .badge-err { color: #f59e0b; font-weight: bold; text-transform: uppercase; }
+        .badge-theme { background-color: #1e293b; padding: 4px 8px; border-radius: 4px; color: #94a3b8; }
+        .feedback-box { font-size: 0.75rem; padding: 12px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3); background-color: rgba(127, 29, 29, 0.2); color: #fca5a5; }
+        .feedback-box.correct-ans { border-color: rgba(34, 197, 94, 0.3); background-color: rgba(20, 83, 45, 0.2); color: #86efac; }
+        .feedback-title { font-weight: bold; display: block; margin-bottom: 2px; }
+    </style>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        emailjs.init({ publicKey: "HRODpKSxHCmOnzgGW" });
+    </script>
 </head>
 <body>
- <div id="main-container" class="container">
- <div id="cheat-screen" class="hidden text-center" style="padding: 16px 0;">
- <h2 style="color: #f87171; font-size: 1.5rem; font-weight: bold; margin-bottom: 8px;">Security Alert</h2>
- <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 24px; line-height: 1.4;">You have left the test screen. This action is detected as an attempt to cheat.</p>
- <div style="background-color: rgba(127,29,29,0.2); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
- <span style="font-size: 0.75rem; color: #f87171; display: block; margin-bottom: 4px;">Penalty applied</span>
- <span style="font-size: 0.875rem; font-weight: 500;">-5 minutes of the overall time</span>
- </div>
- <button id="resume-btn" class="action-btn danger">Retry</button>
- </div>
- <div id="quiz-screen">
- <div id="global-timer" class="timer-box">2:00:00</div>
- <div class="progress-bg"><div id="progress-bar" class="progress-bar"></div></div>
- <div class="question-header">
- <span id="question-number" class="q-number">Question 1</span>
- <span id="question-theme" class="q-theme">Category</span>
- </div>
- <h2 id="question-text" class="question-text">Loading...</h2>
- <div id="options-container" class="options-list"></div>
- <div style="display: flex; gap: 12px; margin-top: 24px;">
- <button id="prev-btn" class="action-btn secondary hidden" style="margin-top: 0;">Précédent</button>
- <button id="next-btn" class="action-btn" style="margin-top: 0;">Question suivante</button>
- </div>
- </div>
- <div id="result-screen" class="hidden text-center">
- <h2 id="result-title" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 8px;">End of the Test</h2>
- <p id="result-message" style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 24px;">Summary of your general knowledge in air traffic management</p>
- <div class="score-box">
- <span class="score-title">Your final score </span>
- <span id="final-score" class="score-val">0 / 0</span>
- </div>
- <div style="display: flex; flex-direction: column; gap: 12px;">
- <button id="review-btn" class="action-btn" style="background-color: #d97706;" onmouseover="this.style.backgroundColor='#b45309'" onmouseout="this.style.backgroundColor='#d97706'">⚠ Revoir les erreurs</button>
- <button id="restart-btn" class="action-btn secondary">Try again</button>
- </div>
- </div>
- <div id="review-screen" class="hidden">
- <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 4px;">Revisit Wrong Answers</h2>
- <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 16px;">Review your incorrect answers to improve.</p>
- <div id="errors-list" class="errors-container"></div>
- <button id="back-to-results-btn" class="action-btn muted">Back to main menu</button>
- </div>
- <!-- MENTION DE COPYRIGHT -->
- <div style="text-align: center; margin-top: 16px; font-size: 0.75rem; color: #64748b; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;">
- © 2026 Train Your Brain - Tous droits réservés.
- </div>
- 
- <script>
-        
+    <div id="main-container" class="container">
+        <div id="cheat-screen" class="hidden text-center" style="padding: 16px 0;">
+            <h2 style="color: #f87171; font-size: 1.5rem; font-weight: bold; margin-bottom: 8px;">Security Alert</h2>
+            <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 24px; line-height: 1.4;">You have left the test screen. This action is detected as an attempt to cheat.</p>
+            <div style="background-color: rgba(127,29,29,0.2); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                <span style="font-size: 0.75rem; color: #f87171; display: block; margin-bottom: 4px;">Penalty applied</span>
+                <span style="font-size: 0.875rem; font-weight: 500;">-5 minutes of the overall time</span>
+            </div>
+            <button id="resume-btn" class="action-btn danger">Retry</button>
+        </div>
+
+        <div id="quiz-screen">
+            <div id="global-timer" class="timer-box">2:00:00</div>
+            <div class="progress-bg"><div id="progress-bar" class="progress-bar"></div></div>
+            <div class="question-header">
+                <span id="question-number" class="q-number">Question 1</span>
+                <span id="question-theme" class="q-theme">Category</span>
+            </div>
+            <h2 id="question-text" class="question-text">Loading...</h2>
+            <div id="options-container" class="options-list"></div>
+            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                <button id="prev-btn" class="action-btn secondary hidden" style="margin-top: 0;">Précédent</button>
+                <button id="next-btn" class="action-btn" style="margin-top: 0;">Question suivante</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden text-center">
+            <h2 id="result-title" style="font-size: 1.5rem; font-weight: bold; margin-bottom: 8px;">End of the Test</h2>
+            <p id="result-message" style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 24px;">Summary of your general knowledge in air traffic management</p>
+            <div class="score-box">
+                <span class="score-title">Your final score</span>
+                <span id="final-score" class="score-val">0/0</span>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button id="review-btn" class="action-btn" style="background-color: #d97706;" onmouseover="this.style.backgroundColor='#b45309'" onmouseout="this.style.backgroundColor='#d97706'">Revoir les erreurs</button>
+                <button id="restart-btn" class="action-btn secondary">Try again</button>
+            </div>
+        </div>
+
+        <div id="review-screen" class="hidden">
+            <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 4px;">Revisit Wrong Answers</h2>
+            <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 16px;">Review your incorrect answers to improve.</p>
+            <div id="errors-list" class="errors-container"></div>
+            <button id="back-to-results-btn" class="action-btn muted">Back to main menu</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 16px; font-size: 0.75rem; color: #64748b; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;">
+            2026 Train Your Brain - Tous droits réservés.
+        </div>
+    </div>
+
+    <script>
         const originalQuizData = [
-            { theme: "Circulation Aérienne", question: "1. La clairance initiale au départ comprend :", options: ["L’autorisation de roulage et de décollage ;", "La clairance de départ et la clairance de décollage ;", "L’autorisation de décollage et le SID ;", "La clairance de départ et la clairance de route ;"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "2. La clairance initiale d’arrivée doit comprendre entre autre :", options: ["l’altitude de l’aérodrome d’arrivée ;", "l’altitude minimale de secteur ;", "la piste en service et la procédure prévue ;", "la piste en service et les procédures disponibles."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "3. La clairance initiale à l’arrivée est délivrée :", options: ["Avant toute pénétration dans un espace arien ;", "Avant toute pénétration en espace aérien contrôlé ;", "Dès le premier contact ;", "Dès le début descente des aéronefs à l’arrivée ;"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "4. La clairance de route est élaborée:", options: ["Uniquement sur demande du contrôleur chargé du contrôle d’approche;", "Par l’organisme chargé du contrôle régional ;", "Par l’organisme chargé du contrôle d’approche ;", "Par l’organisme chargé du contrôle d’aérodrome."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "5. La clairance de route est élaborée par :", options: ["L’organisme chargé du contrôle d’approche ;", "Le centre d’information de vol (FIC);", "Le centre de contrôle régional (ACC) ;", "La tour de contrôle en collaboration avec les autres organismes."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "6. La clairance de départ est délivrée au plus tard :", options: ["Au moment de l’alignement ;", "Au moment de la mise en route ;", "Au moment du roulage ;", "Juste après le décollage."], correct: 1 },
-            { theme: "Séparations", question: "7. Une clairance de séparation à vue est une clairance complémentaire accordée à:", options: ["un aéronef en vol VFR lui permettant de s'affranchir des espacements réglementaires vis à vis d'un seul autre aéronef contrôlé et d'assurer visuellement sa propre séparation par rapport à celui-ci ;", "un aéronef en vol non contrôlé lui permettant de s'affranchir des espacements réglementaires vis à vis des autres aéronefs contrôlés et d'assurer visuellement sa propre séparation par rapport à ceux-ci ;", "un aéronef en vol contrôlé lui permettant de s'affranchir des espacements réglementaires vis à vis d'un seul autre aéronef contrôlé et d'assurer visuellement sa propre séparation par rapport à celui-ci ;", "un aéronef en vol contrôlé en vue de l’aérodrome et lui permettant de s'affranchir des espacements réglementaires vis à vis d'un seul autre aéronef contrôlé et d'assurer visuellement sa propre séparation par rapport à celui-ci."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "8. L'heure d'approche prévue, c’est l’heure à laquelle :", options: ["un organisme du contrôle de la circulation aérienne prévoit qu'un aéronef atteindra le repère d’attente ;", "un organisme du contrôle de la circulation aérienne prévoit qu'un aéronef quittera le repère d'attente pour exécuter son approche en vue d’un atterrissage ;", "un organisme du contrôle de la circulation aérienne prévoit qu'un aéronef débutera son approche;", "s'achève la phase en route d'un vol."], correct: 1 },
-            { theme: "Séparations", question: "9. Dans les espaces aériens gérés par l’ASECNA, la séparation latérale réglementaire entre deux aéronefs est assurée lorsque :", options: ["les aéronefs sont tous deux stabilisés sur des radiales d’un même VOR qui divergent de 10 degrés ou plus et que l’un des aéronefs se trouve à une distance de 28 Km (15NM) ou plus de l’installation ;", "les aéronefs sont tous deux stabilisés sur des radiales d’un même VOR qui divergent de 15 degrés au plus et que l’un des aéronefs se trouve à une distance de 28 Km (15NM) ou moins de l’installation ;", "les aéronefs sont tous deux stabilisés sur des radiales d’un même VOR qui divergent de 15 degrés ou plus et que l’un des aéronefs se trouve à une distance de 28 Km (15NM) ou plus de l’installation ;", "les aéronefs sont tous deux stabilisés sur des radiales d’un même VOR qui divergent de 20 degrés au moins et que l’un des aéronefs se trouve à une distance de 28 Km (15NM) ou plus de l’installation."], correct: 2 },
-            { theme: "Séparations", question: "10. Dans le cas où un NDB est utilisé pour assurer la séparation latérale entre deux aéronefs, on peut considérer que la séparation latérale réglementaire est réalisée lorsque :", options: ["les deux aéronefs sont stabilisés sur des routes en rapprochement ou en éloignement du NDB qui divergent d’au moins 30 degrés et que l’un des aéronefs se trouve à une distance de 28 Km ou plus de l’installation ;", "les deux aéronefs sont stabilisés sur des routes en rapprochement ou en éloignement du NDB qui divergent d’au moins 20 degrés et que l’un des aéronefs se trouve à une distance de 15 NM ou plus de l’installation ;", "les deux aéronefs sont stabilisés sur des routes en rapprochement ou en éloignement du NDB qui divergent d’au plus 15 degrés et que l’un des aéronefs se trouve à une distance de 15 NM ou plus de l’installation ;", "les deux aéronefs sont stabilisés sur des routes en rapprochement ou en éloignement du NDB qui divergent d’au moins 30 degrés et que l’un des aéronefs se trouve à une distance de 10 NM ou plus de l’installation."], correct: 1 },
-            { theme: "Séparations", question: "11. Dans le cas d’une navigation à l’estime, on peut considérer que la séparation latérale réglementaire est assurée entre deux aéronefs lorsque :", options: ["les aéronefs sont tous deux stabilisés sur des routes qui divergent de 45 degrés au plus, que l’un des aéronefs se trouve à une distance de 15 NM ou plus...", "les aéronefs sont tous deux stabilisés sur des routes qui divergent d’au moins 30 degrés, que l’un des aéronefs se trouve à une distance de 15 NM ou plus...", "les aéronefs sont tous deux stabilisés sur des routes qui divergent d’au moins 25 degrés, que l’un des aéronefs se trouve à une distance de 15 NM ou plus...", "les aéronefs sont tous deux stabilisés sur des routes qui divergent d’au moins 45 degrés, que l’un des aéronefs se trouve à une distance de 15 NM ou plus du point d’intersection des routes, ce dernier étant déterminé visuellement ou par référence à une aide de navigation, et que les deux aéronefs sont stabilisés en éloignement par rapport à ce point."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "12. Une autorisation de contrôle de la circulation aérienne est :", options: ["Une autorisation accordée à un aéronef de manœuvrer pour rejoindre le niveau de vol spécifié au plan de vol déposé;", "Une instruction accordée à un aéronef de manœuvrer dans des conditions spécifiées pour éviter un autre aéronef;", "Une autorisation accordée à un aéronef de manœuvrer dans des conditions spécifiées par un organisme de contrôle de la circulation aérienne;", "Une autorisation accordée à un aéronef de pénétrer dans dans un espace aérien contrôlé."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "13. Pour demander à un pilote sa distance par rapport à un point spécifié, le contrôleur doit dire :", options: ["« TSG203, quelle est votre distance de MPK » ou « TSG203, what is your distance from MPK » ;", "« TSG203, dites votre distance de MPK » ou « TSG203, say your distance from MPK » ;", "« TSG203, transmettez votre distance de MPK » ou « TSG203, trasmit your distance from MPK » ;", "« TSG203, indiquez votre distance de MPK » ou « TSG203, report distance from MPK » ;"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "14. L’autorisation conditionnelle « derrière l’avion à l’arrivée » ou « après l’avion au départ » ne seront utilisées que :", options: ["si le contrôleur et le pilote intéressé sont d’accord ;", "si le contrôleur initie et reçoit l’accord du pilote ;", "si le contrôleur et le pilote intéressé peuvent voir l’aéronef en question ;", "si le pilote intéressé peut voir l’aéronef ou le véhicule en question ;"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "15. L’information de vol comprend :", options: ["Seulement des messages de renseignements sur la circulation aérienne ;", "Des messages de renseignements sur la circulation aérienne, sur la météorologie, sur le fonctionnement des installations et relatifs à l’état des aérodromes ;", "Des messages d’information de vol et de d’information de trafic ;", "Des messages d’information de vol, de météorologie et de l’infrastructure sur les aérodromes et des aides de navigation."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "16. L'expression couramment utilisée « Pas de trafic connu / No reported traffic » :", options: ["est un renseignement sur la circulation aérienne;", "une information de trafic ;", "une information de vol ;", "une autorisation de vol."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "17. Le service d'information de vol d'aérodrome – AFIS est assuré par un organisme AFIS mis en place sur un aérodrome non contrôlé pour assurer :", options: ["le service d'information de contrôle d’aérodrome au bénéfice des aéronefs évoluant dans la circulation d'aérodrome ;", "le service d'information de vol au bénéfice des aéronefs évoluant dans la circulation d'aérodrome ;", "l’information de trafic au bénéfice des aéronefs évoluant dans le circuit d'aérodrome ;", "le service d'information et le service d’alerte dans la CTR."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "18. La navigation de surface (RNAV) est définie comme étant :", options: ["Une méthode de navigation au plus près de la surface du sol ;", "Une méthode de navigation permettant le vol dans n’importe quelle trajectoire uniquement avec les moyens inertiels ;", "Une méthode de navigation permettant le vol dans n’importe quelle trajectoire voulue uniquement dans les limites de la couverture des aides à la navigation par satellite ;", "Une méthode de navigation permettant le vol dans n’importe quelle trajectoire voulue dans les limites de la couverture des aides à la navigation de référence ou dans les limites des possibilités d’une aide autonome ou grâce à la combinaison de ces deux moyens ;"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "19. En cas de réception d’un avis de résolution (RA) TCAS, un pilote :", options: ["vérifie l’exactitude de la RA avant de l’appliquer ;", "demande l’autorisation de l’organisme de contrôle avant d’appliquer la RA ;", "applique immédiatement la RA sans s’en référer à l’organisme de contrôle ;", "n’applique la RA que dans un espace aérien non contrôlé."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "20. Vous êtes Contrôleur Exécutif (EC) et vous recevez sur la fréquence opérationnelle : « ASECNA CONTROLE … VBW962, MONTEE TCAS, LIBERANT FL330 ». Devrez-vous répondre par :", options: ["Rappelez RA TCAS terminé ;", "Wilco ;", "Roger ;", "Rappellez passant prochain niveau."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "21. Une circulation à la surface d’un aéronef se caractérise par :", options: ["le déplacement d’un aéronef aux moyens d’un engin de remorquage sur les aires de mouvement ;", "le déplacement d’un aéronef aux moyens d’un engin de remorquage sur les voies de circulation ou les pistes d’atterrissage ;", "le vol rasant d’un aéronef au-dessus de la surface de l’eau ;", "le déplacement d’un aéronef, par ses propres moyens, à la surface d’un aérodrome, à l’exclusion des décollages et des atterrissages."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "22. Une circulation en vol rasant (Air-Taxiing) est :", options: ["le déplacement d’un aéronef au-dessus de la surface d’un aérodrome, normalement dans l’effet de sol et à une vitesse-sol inférieure à 20 kt et à une latitude d’au plus 100 pieds ;", "le déplacement d’un aéronef au-dessus de la surface d’un aérodrome, normalement dans l’effet de sol et à une vitesse-sol inférieure à 20 kt et à une latitude d’au plus 500 pieds ;", "le déplacement d’un avion ou d’un hélicoptère au-dessus de la surface d’un aérodrome, normalement dans l’effet de sol et à une vitesse-sol inférieure à 20 kt et à une latitude d’au plus 100 pieds ;", "le déplacement d’un aéronef VTOL au-dessus de la surface d’un aérodrome, normalement dans l’effet de sol et à une vitesse-sol inférieure à 20 kt ;"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "23. Une limite d’autorisation est :", options: ["L’espace dans lequel une autorisation du contrôle ATC est valable;", "Le point à partir duquel une autorisation ATC entre en vigueur;", "Le point jusqu’où une autorisation du contrôle de la circulation aérienne est valable;", "Le point jusqu’où une autorisation du contrôle de la circulation aérienne n’est pas valable."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "24. Une route RNAV est :", options: ["Une route ATS établie à l’usage des aéronefs qui utilisent la navigation à l’estime ;", "Un itinéraire prédéterminé entre deux VOR distant de moins de 200 NM dans un espace aérien contrôlé ;", "Une route ATS établie à l’usage des aéronefs longs courriers qui utilisent la navigation satellitaire ;", "Une route ATS établie à l’usage des aéronefs qui peuvent utiliser la navigation de surface."], correct: 3 },
-            { theme: "Altimétrie", question: "25. Dans un espace aérien RVSM et sous respect de la règle semi-circulaire :", options: ["tous les niveaux de croisière sont utilisables ;", "les niveaux de vol FL310, FL350, et FL390 ne sont pas utilisables ;", "les FL310, FL350, et FL390 sont toujours utilisables dans le sens Est/Ouest ;", "les FL310, FL350, et FL390 sont utilisables dans les deux sens."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "26. Les aéronefs d’État sont les aéronefs appartenant :", options: ["aux forces de police et de l’armée ;", "à l’armée et à la douane ;", "à l’armée, à la douane, à la police et à la Présidence de la République ;", "aux forces armées, à la douane et à la police."], correct: 3 },
-            { theme: "Séparations", question: "27. Le minium de séparation verticale applicable dans un espace aérien de transition RVSM est de :", options: ["2000 ft.", "Au moins 2000 ft.", "1000 ft.", "Au moins de 1500 ft."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "28. Le message « UNABLE RVSM DUE EQUIPMENT » émis par un pilote, signifie que :", options: ["Les équipements de l’aéronef ne lui permettent plus de pouvoir respecter la RNP dans le plan vertical pour opérer dans l’espace aérien RVSM ;", "Les équipements de l’aéronef ne lui permettent plus de pouvoir respecter la RNP dans le plan horizontal pour opérer dans l’espace aérien RVSM ;", "Les équipements de l’aéronef mettent en doute son homologation RVSM ;", "L’aéronef demande un traitement d’urgence."], correct: 1},
-            { theme: "Circulation Aérienne", question: "29. Le message « UNABLE RVSM DUE TURBULENCE » émis par un pilote, signifie que :", options: ["L’aéronef rencontre des turbulences qui risquent d’altérer ses capacités à se maintenir à son CFL et qu’il ne peut plus respecter la RNP dans le plan horizontal pour opérer dans l’espace aérien RVSM ;", "L’aéronef rencontre des turbulences qui risquent d’altérer ses capacités à se maintenir à son CFL et qu’il ne peut plus respecter la RNP dans le plan vertical pour opérer dans l’espace aérien RVSM ;", "L’aéronef n’est pas homologué RVSM ;", "L’aéronef demande un traitement d’urgence."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "30. Un contrôleur exécutif reçoit d’un pilote le message « UNABLE RVSM DUE EQUIPEMENT ». Doit-il le considérer comme :", options: ["Non homologué RVSM jusqu’à nouvel avis ?", "Toujours homologué RVSM ?", "Non homologué RVSM pour toute la suite du vol ?", "Non homologué RVSM pendant une période précisée ?"], correct: 3 },
-            { theme: "Séparations", question: "31. Un contrôleur exécutif reçoit d’un pilote le message « UNABLE RVSM DUE TURBULENCE ». Le contrôleur doit alors :", options: ["Être vigilant tout en établissant une séparation verticale de 1000 ft avec les autres aéronefs ;", "Considérer l’aéronef comme toujours homologué RVSM ;", "Etablir, soit un minimum de séparation horizontale approprié, soit un minimum de séparation verticale de 2 000 ft ;", "Considérer l’aéronef comme non homologué RVSM et établir une séparation horizontale appropriée."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "32. Un aéronef civil est non homologué RVSM. Les aérodromes de départ et d’arrivée sont situés à l’intérieur d’un espace aérien RVSM. Ses performances lui permettent de voler au-dessus de l’espace aérien RVSM. L’ATS :", options: ["peut l’autoriser à monter au-dessus de l’espace aérien RVSM ;", "doit l’autoriser à stabiliser au FL410 ou au-dessus ;", "ne doit l’autoriser à voler qu’en dessous de l’espace aérien RVSM ;", "peut l’autoriser à n’importe quel niveau de vol à l’intérieur de l’espace aérien RVSM."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "33. Dans les espaces aériens gérés par l’ASECNA, l’embarquement des moyens de radiocommunications bilatérales est obligatoire :", options: ["Pour les aéronefs IFR en espace aérien inférieur ;", "Pour les aéronefs IFR et VFR en espace aérien inférieur ;", "Pour les aéronefs IFR et VFR en espace aérien supérieur ;", "Pour tous les aéronefs, quelque soit le régime de vol ;"], correct: 2 },
-            { theme: "Circulation Aérienne", question: "34. Dans les espaces aériens gérés par l’ASECNA, les vols VFR sont autorisés :", options: ["Jusqu’au FL095 ;", "Jusqu’au FL145 ;", "Entre le FL 095 et le FL145 ;", "Entre le FL145 et le FL245."], correct: 1 },
-            { theme: "Séparations", question: "35. Dans un espace aérien de classe C, l'espacement est assuré :", options: ["entre les IFR seulement ;", "entre les VFR seulement ;", "entre les IFR et VFR ;", "entre les IFR et entre les VFR/S seulement."], correct: 2 },
-            { theme: "Séparations", question: "36. La séparation par « Croisement constaté à vue » signifie que :", options: ["L’un des pilotes au moins a visuel sur l’autre ;", "Les deux pilotes ont visuel l’un sur l’autre ;", "Les deux pilotes ont expressément signalé s’être croisés à vue l’un sur l’autre ;", "Les deux pilotes vont se croiser à vue l’un sur l’autre ;"], correct: 2 },
-            { theme: "Circulation Aérienne", question: "37. Dans un espace aérien de classe A :", options: ["ni les vols IFR ni VFR ne sont admis ;", "sont admis les vols IFR et VFR ;", "ne sont admis que les vols IFR ;", "ne sont admis que les vols VFR."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "38. Dans un espace aérien de classe D :", options: ["ni les vols IFR ni VFR ne sont admis ;", "sont admis les vols IFR et VFR ;", "ne sont admis que les vols IFR ;", "ne sont admis que les vols VFR."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "39. Dans un espace aérien de classe F :", options: ["seuls les vols militaires sont admis ;", "sont admis les vols IFR et VFR ;", "ne sont admis que les vols IFR ;", "ne sont admis que les vols VFR."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "40. Dans un espace aérien de classe G :", options: ["aucun vol non contrôlé n’est admis ;", "sont admis les vols IFR et VFR ;", "ne sont admis que les vols IFR ;", "ne sont admis que les vols VFR."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "41. Un aérodrome contrôlé est un aérodrome où le service :", options: ["du contrôle de la circulation aérienne est assuré dans la zone de contrôle (CTR) ;", "du contrôle de la circulation aérienne est assuré au bénéfice des aéronefs évoluant dans la circulation d'aérodrome ;", "d’information de vol est assuré au bénéfice de la circulation aérienne ;", "du contrôle sol est assuré au bénéfice des aéronefs en IFR et en VFR."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "42. Un aérodrome AFIS est un aérodrome :", options: ["Non doté d’une CTR ;", "doté d’au moins une tour de contrôle ;", "où n’est assuré que le service d’information au bénéfice des aéronefs en circulation d’aérodrome. ;", "Non doté de procédures d’approche aux instruments."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "43. Le centre de contrôle régional est l'organisme de circulation aérienne chargé d'assurer la fourniture :", options: ["des services de la CA au bénéfice des aéronefs évoluant dans les régions de contrôle relevant de son autorité ;", "des services de contrôle, d'information et d'alerte dans la TMA et la CTR ;", "Des services ATS au profit des vols non contrôlés ;", "des services d'information et d'alerte au profit des vols non contrôlés dans les espaces de classe F et G"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "44. Le centre d'information de vol est l'organisme de la circulation aérienne :", options: ["institué pour assurer le service d'information de vol et le service d'alerte au profit des aéronefs contrôlés dans les espaces de classe F et G. ;", "institué pour assurer les fonctions abordage et information au profit des aéronefs contrôles dans les espaces de classe F et G. ;", "institué pour assurer le service d'information de vol et le service d'alerte au profit des aéronefs non contrôlés dans les espaces de classe F et G ;", "institué pour assurer le service d'information de vol au profit des aéronefs non contrôlés dans les espaces de classe F et G en espace aérien inférieur."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "45. Le centre d’information de vol (CIV ou FIC) assure le service d’information de vol en fournissant les renseignements sur la circulation aérienne...", options: ["Au bénéfice des vols VFR évoluant dans la FIR ;", "Au bénéfice des vols non contrôlés IFR et VFR évoluant dans la FIR ;", "Au bénéfice des vols IFR et VFR évoluant en espace aérien inférieur ;", "Au bénéfice des vols IFR et VFR évoluant en espace aérien supérieur."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "46. La distance DME fournie au pilote par le récepteur de bord est :", options: ["la distance verticale avion/sol ;", "la distance horizontale de la station à la projection verticale de l’avion ;", "la distance oblique station/avion ;", "la distance en nautiques de l’altitude de l’avion."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "47. La cadence d’approche est :", options: ["l'intervalle de temps entre deux décollages successifs ;", "l'intervalle de temps entre un atterrissage et un décollage ;", "l'intervalle de temps à respecter entre deux atterrissages successifs ;", "l'intervalle de temps entre deux atterrissages et un décollage successives."], correct: 2 },
-            { theme: "Séparations", question: "48. Deux avions non homologués RVSM volant selon les règles de vol IFR et évoluant entre les niveaux de vol F250 et F280 sont séparés lorsqu'il y a entre eux une distance verticale d'au moins :", options: ["500 ft", "2000 ft", "1000 ft", "dépend de l’homologation RVSM ou non."], correct: 2 },
-            { theme: "Séparations", question: "49. Deux avions homologués RVSM volant selon les règles de vol IFR et évoluant entre les niveaux de vol F300 et F350 dans un espace aérien RVSM, sont espacés lorsqu'il y a entre eux une distance verticale d'au moins :", options: ["1500 ft ;", "1000 ft ;", "2000 ft ;", "300 ft."], correct: 1 },
-            { theme: "Séparations", question: "50. Deux avions homologués RVSM volant selon les règles de vol IFR et évoluant entre les niveaux de vol F290 et F350 dans un espace aérien non RVSM, sont espacés lorsqu'il y a entre eux une distance verticale d'au moins :", options: ["1500 ft ;", "2000 ft ;", "1000 ft ;", "300 ft."], correct: 1 },
-            { theme: "Séparations", question: "51. Deux avions non homologués RVSM volant selon les règles de vol IFR et évoluant entre les niveaux de vol F150 et F250, sont séparés lorsqu'il y a entre eux une distance verticale d'au moins :", options: ["1500 ft ;", "2000 ft ;", "1000 ft ;", "300 ft."], correct: 2 },
-            { theme: "Approches aux instruments", question: "52. La manœuvre à vue imposée (MVI):", options: ["est une procédure qui impose à un aéronef à l’arrivée d’effectuer une approche à vue ;", "est une procédure permettant un aéronef à l’arrivée en panne de communications air-sol à effectuer un passage à vue devant la tour de contrôle pour s’identifier ;", "est une procédure permettant un aéronef à l’arrivée à suivre une trajectoire finale d’approche aux instruments jusqu’à un point déterminé de celle-ci pour atterrir sur le QFU opposé ;", "est une procédure permettant un aéronef à l’arrivée à suivre une procédure d’approche aux instruments publiée et atterrir."], correct: 2 },
-            { theme: "Approches aux instruments", question: "53. Une manœuvre à vue libre (MVL) :", options: ["est une procédure permettant une évolution libre à l’arrivée en s’affranchissant des trajectoires imposées et des obstacles ;", "est une procédure de percée aux instruments suivie d'évolutions libres effectuées à l'intérieur d'une aire protégée pour atterrir sur un autre QFU ;", "est une autorisation d’approche à vue octroyée par l’ATC sur demande du pilote ;", "est une manœuvre d’évitement en VMC dans le circuit d’aérodrome."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "54. Un niveau de vol tactique est :", options: ["un niveau de vol inscrit dans un plan de vol et réservé pour une utilisation tactique par l’ATC ;", "un niveau de vol réservé pour utilisation tactique par l’ATC et qui, en tant que tel, ne devrait pas être inscrit dans un plan ;", "un niveau de vol réservé pour une utilisation ultérieure par l’ATC ;", "un niveau de vol réservé pour utilisation tactique par l’équipage et qui, en tant que tel, est inscrit dans un plan de vol complémentaire."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "55. Un niveau de vol stratégique est :", options: ["un niveau de vol inscrit dans un plan de vol pour une utilisation stratégique par l’ATC ;", "un niveau de vol réservée pour une utilisation stratégique par l’équipage et qui, en tant que tel, est inscrit dans un plan de vol complémentaire ;", "un niveau de vol inscrit dans un plan de vol pour une utilisation par l’équipage au cours de son vol ;", "un niveau de vol réservé pour une utilisation stratégique par l’équipage et qui, en tant que tel, est inscrit dans un plan de vol complémentaire."], correct: 2 },
-            { theme: "Altimétrie", question: "56. Un avion est autorisé au FL120 dès le décollage d’un aérodrome où l’altitude de transition est de 2500 pieds et le niveau de partage est le FL060, il doit passer du calage QNH au calage standard en croisant :", options: ["3000 pieds QNH ;", "FL060 ;", "6000 pieds QNH ;", "2500 pieds QNH."], correct: 3 },
-            { theme: "Altimétrie", question: "57. L’altitude de franchissement d’obstacles (OCA) :", options: ["altitude la plus basse au-dessus de l’obstacle le plus élevé situé à côté de la piste, utilisée pour respecter les critères de franchissement d’obstacles ;", "altitude la plus basse au-dessus du seuil de piste en cause ou au-dessus de l’aérodrome utilisée pour respecter les critères de franchissement d’obstacles ;", "altitude la plus basse au-dessus de l’obstacle le plus élevé situé au QFU opposé de la piste en service, utilisée pour respecter les critères de franchissement d’obstacles ;", "altitude la plus basse au-dessus de l’obstacle le moins élevé situé au QFU opposé de la piste en service, utilisée pour respecter les critères de franchissement d’obstacles ;"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "58. Dans les espaces aériens gérés par l’ASECNA, le VFR/Contact (VFR/C) :", options: ["Est obligatoire en dehors de la CTR, dans les régions inhospitalières pour les aéronefs non munis d’équipements de radio télécommunications bilatérales ;", "n'existe pas ;", "est obligatoire dans les espaces de classe F et G pour les aéronefs ne pouvant pas contacter un CIV ;", "est défini pour les aéronefs non munis d’équipements de radio télécommunications bilatérales."], correct: 1 },
-            { theme: "Séparations", question: "59. Deux avions se suivent au départ et leurs routes divergent d’au moins 45° aussitôt après décollage. Le 1er décolle à 1635, le 2ème décollera au plus tôt à :", options: ["16h38 ;", "16h40 ;", "16h36 ;", "16h46 ;"], correct: 2 },
-            { theme: "Séparations", question: "60. Deux aéronefs au départ doivent suivre la même route pour le même niveau de vol. Le 1er avion décolle à 20h32 pour une vitesse 280 Kt, le 2ème, à une vitesse 220 Kt, décollera au plus tôt à :", options: ["20h33 ;", "20h34 ;", "20h37 ;", "20h42 ;"], correct: 1 },
-            { theme: "Séparations", question: "61. Un aéronef doit croiser le niveau de vol d'un autre en croisière qui le précède au départ et les deux aéronefs suivent la même route. L'espacement entre eux sera au moins de :", options: ["5 mn au moment où le 2ème croise le niveau de croisière du 1er.", "5 mn tant qu’il n’y aura pas d’espacement vertical.", "10 mn tant qu’il n’y aura pas d’espacement vertical.", "10 mn au moment où le 2ème croise le niveau de croisière du 1er."], correct: 2 },
-            { theme: "Séparations", question: "62. Deux aéronefs au départ sont en montée en taux réglés. Une telle autorisation n'est possible :", options: ["que si les pilotes des deux aéronefs sont sur la même fréquence,", "que si les deux aéronefs adoptent les mêmes vitesses de montée ;", "que si l’espacement vertical est d’au moins 2000 pieds ;", "que si les deux aéronefs sont sur la même route magnétique."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "63. Une autorisation du contrôle de la circulation aérienne est :", options: ["une autorisation accordée par un organisme ATC à un aéronef en vol IFR.", "une autorisation accordée par un organisme ATC à un aéronef de manœuvrer dans des conditions spécifiées.", "une information de vol donnée à un aéronef en vol.", "une information de trafic donnée à un aéronef en vol."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "64. Une limite d’autorisation est :", options: ["un point à partir duquel une autorisation du contrôle de la circulation aérienne est valable.", "une instruction de contrôle de la circulation aérienne accordée à un aéronef en circulation d’aérodrome.", "un point jusqu’où est valable une autorisation du contrôle de la circulation aérienne accordée à un aéronef.", "un espacement établi entre deux aéronefs en vol IFR dans un espace aérien contrôlé."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "65. Une phase d’alerte est désignée par l’expression conventionnelle :", options: ["DETRESFA ;", "INCERFA ;", "ALERFA ;", "EVASAN ;"], correct: 2 },
-            { theme: "Circulation Aérienne", question: "66. Les formats de strips utilisés à l’ASECNA sont de deux sortes, qui sont :", options: ["ENR et APP ;", "APP et TWR ;", "ACC et TMA ;", "ENR et TWR."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "67. La case 15 du plan de vol OACI doit contenir :", options: ["la première vitesse de croisière, le premier niveau de croisière et la route.", "l'aérodrome de départ, l’aérodrome d’arrivée, l’heure estimée d’arrivée.", "la route ATS, les points de compte-rendu et le nombre de Mach.", "La catégorie de turbulence de sillage, le type d’aéronef et le régime de vol."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "68. La case 16 du plan de vol OACI doit contenir :", options: ["La catégorie de turbulence de sillage, le type d’aéronef et le régime de vol.", "l'aérodrome de destination, durée totale estimée et aérodromes de dégagement.", "la route ATS, les points de compte-rendu et le nombre de Mach.", "l'aérodrome de destination, et aérodromes de dégagement."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "69. Une croisière ascendante (Cruise climb) est une technique de vol en croisière applicable à un avion :", options: ["qui se caractérise par un accroissement de l’altitude à mesure que la masse de l’avion diminue ;", "qui se caractérise par l’utilisation des « block level » à mesure que la masse de l’avion diminue ;", "qui résulte d’une autorisation ATC accordée à un aéronef en montée ;", "qui permet à un équipage d’accroitre son altitude sans l’avis de l’ATC."], correct: 1 },
-            { theme: "Séparations", question: "70. Dans un espace aérien de classe G :", options: ["La séparation longitudinale minimale est de 20 minutes ;", "La séparation longitudinale minimale est de 15 minutes ;", "La séparation longitudinale minimale est de 10 minutes ;", "Il n’y a aucune norme de séparation longitudinale."], correct: 4 },
-            { theme: "Séparations", question: "71. Dans un espace aérien de classe G :", options: ["La séparation verticale minimale est de 1000 ft au-dessus du FL145 ;", "La séparation verticale minimale est de 1000 ft au-dessous du FL290 et 2000 ft au-dessus ;", "La séparation verticale minimale est de 2000 ft au-dessous du FL290 ;", "Il n’y a aucune norme de séparation verticale."], correct: 4 },
-            { theme: "Séparations", question: "72. Dans un espace aérien de classe A deux aéronefs A1 et A2 se suivent sur la même route et au même niveau de vol. Quel est le minimum de séparation longitudinale en temps applicable entre A1 et A2 à l’ASECNA ?", options: ["15 minutes", "5 minutes", "3 minutes", "10 minutes"], correct: 3 },
-            { theme: "Séparations", question: "73. Dans un espace aérien de classe A deux aéronefs A1 et A2 se suivent sur la même route et au même niveau de vol. A1 affiche une vitesse de croisière de 420 Kt et A2 une vitesse de croisière de 360 Kt. Quel est le minimum de séparation longitudinale en temps applicable entre A1 et A2 à l’ASECNA ?", options: ["15 minutes", "5 minutes", "3 minutes", "10 minutes"], correct: 1 },
-            { theme: "Séparations", question: "74. Un F28 et un B737 suivent la même route en sens inverse. Ils estiment le même point de compte-rendu POINT respectivement à 20h42 et 20h54. Quelle est l’heure de croisement ?", options: ["20h43", "20h45", "20h48", "20h50"], correct: 3 },
-            { theme: "Séparations", question: "75. A 20h41, le F28 demande à libérer le FL290 pour le FL330. Le B737 est stable au FL310. A quelle heure le F28 pourra-t-il monter au niveau de vol demandé ?", options: ["20h53", "20h55", "20h58", "21h00"], correct: 3 },
-			           
-            { theme: "Séparations", question: "76. Deux aéronefs B1 et B2 de même performance suivent la même route en sens inverse. Ils sont respectivement à 70 NM et 120 NM de part et d’autre d’un même point de compte-rendu DEX qui est une station DME. À Quelle distance du point DEX l’avion B1 peut croiser le niveau de vol de B2 ?", options: ["quand B1 est à 10 NM après DEX ;", "quand B2 est à 20 NM après DEX ;", "quand B2 est à 15 NM avant DEX ;", "B1 peut croiser le niveau de vol de B2 à n’importe quelle distance avant DES."], correct: 2 },
-            { theme: "Séparations", question: "77. Les deux avions B1 et B2 se sont croisés. À quelle distance du point de croisement B1 peut croiser le niveau de vol de B2 ?", options: ["15 NM", "20 NM", "5 NM", "10 NM"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "78. Le QDR est :", options: ["le relèvement magnétique de l’avion par la station", "le cap magnétique à suivre pour s’approcher de la station", "le relèvement de la station par l’avion", "la route magnétique de l’avion."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "79. Le QDM est :", options: ["le relèvement de l’avion par la station", "le cap magnétique à suivre par vent nul pour se diriger vers la station", "le relèvement vrai de la station par l’avion", "la route magnétique de l’avion par vent nul pour s’éloigner de la station."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "80. Un centre de contrôle régional rend exclusivement les services de circulation aérienne suivants :", options: ["Le service de contrôle régional ;", "Les services de contrôle régional et de contrôle d’approche ;", "Les services de contrôle régional, de contrôle d’approche, d’alerte et d’information ;", "Les services de contrôle régional, de contrôle d’approche et de contrôle d’aérodrome."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "81. A travers les services de circulation aérienne rendus, un centre de contrôle régional assure les fonctions suivantes :", options: ["Abordage et Régulation ;", "Alerte et Information ;", "Collision, abordage, régulation, alerte et information ;", "Abordage, régulation, alerte et information."], correct: 3 },
-            { theme: "Séparations", question: "82. Un point d’entrée RVSM est :", options: ["le premier point d’entrée dans un espace aérien dans lequel les procédures de transition RVSM sont appliquées ;", "le premier point d’entrée dans un espace aérien dans lequel le minimum réduit de séparation verticale de 1000 ft entre aéronefs homologués RVSM est appliqué ;", "le premier point d’entrée dans un espace aérien dans lequel la séparation verticale de 1000 ft entre aéronefs est appliquée ;", "le point à partir duquel tous les aéronefs doivent être homologués RVSM."], correct: 1 },
-            { theme: "Séparations", question: "83. Un point de sortie RVSM est :", options: ["le dernier point de sortie de l’espace aérien à partir duquel les procédures de transition RVSM sont appliquées ;", "le dernier point de sortie de l’espace aérien RVSM à partir duquel le minimum réduit de séparation verticale de 1000 ft entre aéronefs homologués RVSM n’est appliqué ;", "le dernier point de l’espace aérien RVSM à partir duquel la séparation verticale de 1000 ft entre aéronefs est appliquée ;", "le point à partir duquel tous les aéronefs ne sont pas homologués RVSM."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "84. La mention \"STS/NORVSM\" dans la case 18 d’un plan de vol, indique :", options: ["que l’aéronef n’est pas homologué RVSM ;", "que l’aéronef n’est pas homologué RVSM et qu’il demande l’application des procédures RVSM ;", "que l’aéronef n’est pas homologué RVSM et qu’il demande un traitement spécial de 2000 ft de séparation verticale ;", "que l’aéronef est homologué RVSM mais qu’il se trouve dans l’incapcité d’appliquer les procédures RVSM."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "85. Les exploitants de vols en formation d'aéronefs d'État, ayant l'intention d'opérer en CAG dans l'espace aérien RVSM AFI :", options: ["doivent inscrire la mention \"STATE/NORVSM\" dans la case 18 du plan de vol OACI ;", "ne sont pas obligés d’inscrire la mention \"STS/NORVSM\" dans la case 18 du plan de vol ;", "doivent inscrire la mention \"COM/NORVSM\" dans la case 18 du plan de vol OACI ;", "doivent inscrire la mention \"STS/NORVSM\" dans la case 18 du plan de vol OACI."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "86. Un organisme de la circulation aérienne est :", options: ["Une entité opérationnelle chargée de coordonner la fourniture des services ATS ;", "Une entité opérationnelle chargée d’assurer aux usagers la fourniture des services de la circulation aérienne ;", "Une entité opérationnelle chargée d’assurer aux usagers la fourniture des services de contrôle de la circulation aérienne ;", "Une entité opérationnelle chargée d’assurer aux usagers la fourniture des services de contrôle régional, d’approche et d’aérodrome."], correct: 1 },
-            { theme: "Séparations", question: "87. Une clairance VMC est une clairance complémentaire accordée :", options: ["de jour comme de nuit à un aéronef lui permettant, sur sa demande, en VMC, de s'affranchir des espacements réglementaires vis à vis des autres aéronefs et d'assurer visuellement sa propre séparation par rapport à ceux-ci ;", "de jour comme de nuit à un aéronef lui permettant, sur l’initiative du contrôleur, de s'affranchir des espacements réglementaires vis à vis des autres aéronefs et d'assurer visuellement sa propre séparation par rapport à ceux-ci ;", "de jour à un aéronef lui permettant en vue des installations, de s'affranchir des espacements réglementaires vis à vis des autres aéronefs et d'assurer visuellement sa propre séparation par rapport à ceux-ci ;", "de jour à un aéronef lui permettant, sur sa demande, en VMC, de s'affranchir des espacements réglementaires vis à vis des autres aéronefs et d'assurer visuellement sa propre séparation par rapport à ceux-ci."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "88. Les informations de trafics conflictuels en contrôle aux procédures, contiennent les renseignements suivants :", options: ["Indicatif et type d’appareil et niveau de vol ;", "Indicatif, code horaire, route suivie et altitude ;", "Indicatif, route suivie, type d’appareil et niveau de vol ;", "Indicatif, distance, direction, type d’appareil et altitude relative."], correct: 2 },
-            { theme: "Approches aux instruments", question: "89. Parmi les moyens d’atterrissage suivants, un seul n’est pas homologué par l’OACI, lequel ?", options: ["Le Locator ;", "Le Localizer ;", "Le Glide ;", "Le PAPI ;"], correct: 4 },
-            { theme: "Circulation Aérienne", question: "90. Les organismes faisant partie du contrôle local sont :", options: ["La tour de contrôle et le bureau de piste ;", "La tour de contrôle et le bureau du contrôle d’approche ;", "La tour de contrôle, le bureau du contrôle d’approche et le bureau de piste ;", "le centre de contrôle régional et le bureau du contrôle d’approche."], correct: 2 },
-            { theme: "Circulation Aérienne", question: "91. L’expression « ROGER » est un accusé de réception signifiant :", options: ["Message reçu et autorisation accordée ;", "Message reçu et compris ;", "Message reçu et met l’interlocuteur en attente ;", "Message reçu et mal compris."], correct: 1 },
-            { theme: "Séparations", question: "92. La norme minimale de séparation longitudinale en espace aérien contrôlé aux procédures sans rapport avec les vitesses des aéronefs, est de :", options: ["10 minutes ;", "15 minutes ;", "5 minutes ;", "20 minutes."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "93. L’espace aérien inférieur est défini comme étant la portion d’espace compris entre :", options: ["Sol/Mer et le FL150", "Sol/Mer et le FL145", "Sol/Mer et le FL245", "FL095 et le FL145"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "94. L’espace aérien supérieur est défini comme étant la portion d’espace compris entre :", options: ["FL150 et FL390", "FL145 et FL460", "FL245 et FL illimité", "FL250 et FL460"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "95. Une phase d’incertitude (INCERFA) est :", options: ["Situation dans laquelle on peut craindre pour la sécurité d'un aéronef ;", "Situation dans laquelle il y a lieu de douter de la sécurité d'un aéronef et de ses occupants ;", "Situation dans laquelle y il a tout lieu de penser qu'un aéronef est en danger ;", "Situation dans laquelle y il a tout lieu de penser qu'un aéronef et ses occupants sont menacés d'un danger grave et imminent et qu'ils ont besoin d'un secours immédiat. ;"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "96. Une phase d’alerte (ALERFA) est :", options: ["Situation dans laquelle on peut craindre pour la sécurité d'un aéronef et de ses occupants. ;", "Situation dans laquelle il y a lieu de douter de la sécurité d'un aéronef et de ses occupants ;", "Situation dans laquelle y il a tout lieu de penser qu'un aéronef est en danger ;", "Situation dans laquelle y il a tout lieu de penser qu'un aéronef et ses occupants sont menacés d'un danger grave et imminent et qu'ils ont besoin d'un secours immédiat. ;"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "97. Une phase de détresse (DETRESFA) est :", options: ["Situation dans laquelle on peut craindre pour la sécurité d'un aéronef et de ses occupants. ;", "Situation dans laquelle il y a lieu de douter de la sécurité d'un aéronef et de ses occupants ;", "Situation dans laquelle y il a tout lieu de penser qu'un aéronef est en danger ;", "Situation dans laquelle y il a tout lieu de penser qu'un aéronef et ses occupants sont menacés d'un danger grave et imminent et qu'ils ont besoin d'un secours immédiat. ;"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "98. L’expression conventionnelle « Wilco », signifie :", options: ["« votre message est reçu » ;", "« votre message a été compris et sera exécuté » ;", "« votre autorisation n’est pas conforme à la réglementation » ;", "« votre suggestion est comprise »."], correct: 1 },
-            { theme: "Circulation Aérienne", question: "99. L’expression conventionnelle « Ignorez/Disregard », signifie :", options: ["« ne tenez pas compte de la dernière autorisation » ;", "« annulez le dernier message » ;", "« reconsidérez le dernier message » ;", "« ne tenez pas compte de ce message »."], correct: 3 },
-            { theme: "Circulation Aérienne", question: "100. L’expression conventionnelle « Annulez/Cancel », signifie :", options: ["Annulez tous les messages précédents ;", "Annulez tous les messages ultérieurs ;", "Annulez l’autorisation transmise précédemment ;", "Considérer le contraire de l’autorisation précédente."], correct: 2 },
-            { theme: "Système TOPSKY", question: "101. In the TOPSKY airspace, normally the boundaries of your Flight Information Region (FIR) would be the same as the:", options: ["Flight Data Region (FDRG).", "Flight Plan System Area (FPSA).", "Flight Plan Extended Area (FPEA).", "none of the above."], correct: 1 },
-            { theme: "Système TOPSKY", question: "102. When an AFIL is created with an ETD in the future, what is displayed on the ASD:", options: ["A JURISDICTION track extrapolated at the correct distance from the first route point, based on ETD.", "An UNCONTROLLED track, stationary at the first route point & becoming HANDED-OVER FIRST at ETD.", "An ANNOUNCED track, stationary at the first route point & becoming HANDED-OVER FIRST at ETD.", "A HANDED-OVER FIRST track stationary at the first route point & moving at ETD."], correct: 2 },
-            { theme: "Système TOPSKY", question: "103. In the Global Information Window (GIW), the display of LOW in the POSITION Mode button indicates:", options: ["Operation of position by Flight Data Operator (FDO) instead of Executive Controller (EC).", "Normal operation.", "Degraded operation where it is not possible to upgrade the position to a higher level of operation.", "Degraded operation where it is possible to upgrade the position to a higher level of operation."], correct: 3 },
-            { theme: "Système TOPSKY", question: "104. The Flight Data Function of the TOPSKY uses the Flight Data Record (FDR) trajectory & volumetric sectors to determine:", options: ["posting & automatic handoff events.", "posting events & system coordination messages.", "automatic handoff events & system coordination messages.", "posting events, automatic handoff events & system coordination messages."], correct: 3 },
-            { theme: "Système TOPSKY", question: "105. The XFL is displayed in:", options: ["electronic strip & flight plan window.", "electronic strip & track label.", "track label & flight plan window.", "electronic strip, track label & flight plan window."], correct: 1 },
-            { theme: "Système TOPSKY", question: "106. Where does the Flight Data Function of the TOPSKY obtain ROUTE data to calculate the profile of a FDR:", options: ["FDP derived trajectory information.", "departure and destination aerodromes and waypoints.", "departure aerodrome, destination aerodrome & Field 15 of the ICAO flight plan.", "departure aerodrome, destination aerodrome & Fields 10, 12 & 15 of the ICAO flight plan."], correct: 2 },
-            { theme: "Système TOPSKY", question: "107. When the Flight Plan Window (FPW) is opened, it displays:", options: ["a dynamic (continually updated) FDR.", "the original FDR as created by the system.", "a “snapshot” of the FDR at the time when the FPW was opened.", "none of the above."], correct: 2 },
-            { theme: "Système TOPSKY", question: "108. If one end of a Bearing and Range Line (BRL) is a track and the other is anchored on a fixed point, the BRL displays :", options: ["distance & bearing of end point from start point.", "distance & bearing of end point from start point & estimated time at which track will reach the other end.", "estimated time at which track will reach the other end.", "none of the above."], correct: 1 },
-            { theme: "Système TOPSKY", question: "109. Which windows are permanently displayed:", options: ["Global Information Window (GIW) & Command Line (CL).", "Global Information Window (GIW), Air Situation Display (ASD) & Command Line (CL).", "Specific windows that are offline defined as permanent.", "Specific windows selected by the supervisor."], correct: 1 },
-            { theme: "Système TOPSKY", question: "110. When a FDR is in PREACTIVE flight plan state and entering your control sector, you will see:", options: ["no electronic strip in the PREACTIVE strip window & no track.", "a strip in the PREACTIVE strip window & a UNCONCERNED track.", "a strip in the PREACTIVE strip window & no track.", "none of the above."], correct: 2 },
-            { theme: "Système TOPSKY", question: "111. To change the CFL via the track label:", options: ["designate the track & input the new value via the keyboard.", "left click on the CFL field in the track label & select the new value from the pop-up menu.", "right click on the CFL field in the track label & select the new value from the pop-up menu.", "the CFL value cannot be changed via the track label."], correct: 1 },
-            { theme: "Système TOPSKY", question: "112. When the route displayed is selected for a track what information is displayed at each waypoint:", options: ["aircraft identification (ACID) & estimate.", "aircraft identification (ACID).", "estimate.", "aircraft identification (ACID), estimate & CFL."], correct: 3 },
-            { theme: "Système TOPSKY", question: "113. The ASD displays a FDR with a light green track & electronic strip. Which of the following statements is true?", options: ["The FDR is in CONTROLLED state & you are in JURISDICTION display state.", "The FDR is in CONTROLLED state & you are not in JURISDICTION display state.", "The FDR is in CONTROLLED state & is being transferred to your jurisdiction.", "none of the above."], correct: 1 },
-            { theme: "Système TOPSKY", question: "114. When a FDR is in COORDINATED flight plan state & is in ANNOUNCED display state in your sector, you will see:", options: ["only a white electronic strip.", "a white electronic strip & track.", "only a blue electronic strip & black track.", "a blue electronic strip & track."], correct: 3 },
-            { theme: "Système TOPSKY", question: "115. What functionality does a Planner Controller (PLC) have?", options: ["None.", "Full functionality for the Executive positions he is supporting.", "Full functionality for the Executive positions he is supporting except he cannot take jurisdiction.", "Full functionality for the Executive positions designated by the supervisor."], correct: 2 },
-            { theme: "Système TOPSKY", question: "116. When a FDR is in INACTIVE flight plan state which controllers receive electronic strips:", options: ["Executive & Planner Controllers.", "Planner controllers only.", "Executive controllers only.", "none of the above."], correct: 3 },
-            { theme: "Système TOPSKY", question: "117. To center the ASD on a new location defined by a track or geographic position, you would use the following function:", options: ["OFC.", "RST.", "DEF MAP.", "JUMP."], correct: 1},
-            { theme: "Système TOPSKY", question: "118. When a controller draws a PRIVATE LOCAL map, it can be viewed:", options: ["at all controller positions.", "at controller positions selected by the supervisor.", "at the supervisor position only.", "only at the position of the controller who drew the map."], correct: 3 },
-            { theme: "Système TOPSKY", question: "119. When a supervisor draws a PRIVATE GLOBAL map, it can be viewed:", options: ["at the supervisor position only.", "at controller positions selected by the supervisor.", "at EC positions only.", "at PLC positions only."], correct: 1 },
-            { theme: "Système TOPSKY", question: "120. Which of the following statement is true about the Warning window:", options: ["automatically closed when all messages have been acknowledged.", "manually closed when all messages have been acknowledged.", "automatically closed after a offline defined time", "none of the above."], correct: 3 },
-            { theme: "Système TOPSKY", question: "121. When a track label displays a CLAM warning, to stop the audio alarm:", options: ["centre click on the CLAM warning.", "centre click on the ACID.", "designate the track then press ACK on the keyboard.", "designate the track then press ACC on the keyboard."], correct: 2 },
-            { theme: "Système TOPSKY", question: "122. Which of the following is not performed by the Flight Data Function:", options: ["displaying electronic strips.", "sending messages to external ATC units.", "radar data processing.", "displaying FPASD track labels."], correct: 3 },
-            { theme: "Système TOPSKY", question: "123. Where is the Flight Plan State of a FDR displayed?", options: ["in the track label.", "at the supervisor position.", "in the electronic strip and the Flight Plan window.", "at the FDO position."], correct: 2 },
-            { theme: "Système TOPSKY", question: "124. What is the maximum number of Scale Indicators (SCI) that can be displayed at a control position?", options: ["1.", "3.", "5.", "10."], correct: 3 },
-            { theme: "Système TOPSKY", question: "125. The responsible controller of an FDR can initiate holding via the HLD button:", options: ["only at current position.", "only at a future position along the flight plan route.", "either at current position, past or future position along the flight plan route.", "either at current position or a future position along the flight plan route."], correct: 3 },
-            { theme: "Système TOPSKY", question: "126. Who can make changes to a FDR in INACTIVE flight plan state?", options: ["only Executive Controllers (ECs).", "only Flight Data Operators (FDOs).", "only Planner Controllers (PLCs).", "all of the above."], correct: 3 },
-            { theme: "Système TOPSKY", question: "127. What are the checks performed by the Flight Data Function before a FDR is created:", options: ["Syntax & semantics.", "Syntax, uniqueness & format.", "Syntax, semantics & uniqueness.", "none of the above."], correct: 2 },
-            { theme: "Système TOPSKY", question: "128. The Short Route Probe can display the flight plan route ahead of the designated aircraft for:", options: ["only selected distances.", "only selected time intervals.", "either of the above.", "None of the above."], correct: 2 },
-            { theme: "Système TOPSKY", question: "129. What is the function of the ETO alert?:", options: ["indicates that an aircraft has passed a waypoint without reporting.", "indicates that the estimates for 2 aircraft will conflict.", "indicates that the Pilot Estimate (PETO) & the System Estimate (SETO) are significantly different.", "indicates that the ATO (Actual Time Over) is significantly different from the ETO."], correct: 2 },
-            { theme: "Système TOPSKY", question: "130. When you enter information in the GLOBAL_OPS_INFO field of an electronic strip, which of the following is true?", options: ["The information is only displayed at the Supervisor’s position.", "The information is displayed at control positions where the electronic strip is displayed.", "The information is displayed only at your control position.", "The information is displayed only in the track label."], correct: 1 },
-            { theme: "Système TOPSKY", question: "131. To display the flight plan route of a designated track which function key on the keyboard would you use?", options: ["RTE.", "RER.", "UPR.", "DPE."], correct: 1},
-            { theme: "Système TOPSKY", question: "132. To see the estimated Time of Passing for 2 designated tracks which function key on the keyboard would you use?", options: ["TRK ANG.", "TOP.", "DTI.", "UPR."], correct: 1 },
-            { theme: "Système TOPSKY", question: "133. To display the track angle between 2 tracks which function key on the keyboard would you use?", options: ["TRK ANG.", "TOP.", "TXA.", "BRL."], correct: 2},
-            { theme: "Système TOPSKY", question: "134. What is the maximum number of Bearing Range Lines (BRL) that can be displayed on one position?", options: ["1.", "3.", "5.", "10."], correct: 2 },
-            { theme: "Système TOPSKY", question: "135. To store a selected center and range on your ASD, you would use the following function:", options: ["RST.", "STO.", "REST CEN.", "OFC."], correct: 1 },
-            { theme: "Système TOPSKY", question: "136. To change a FDR from COORDINATED flight plan state to PREACTIVE flight plan state, which button in the Flight Plan window would you use?", options: ["EST.", "BACK.", "MOD.", "CNL."], correct: 2},
-            { theme: "Système TOPSKY", question: "137. To cancel the departure time of a flight plan track, which button in the Flight Plan window would you use?", options: ["CDEP.", "BACK.", "MOD.", "CNL."], correct: 1},
-            { theme: "Système TOPSKY", question: "138. To change a FDR to FINISHED flight plan state, which button in the Flight Plan window would you use?", options: ["NEXT.", "CDEP.", "BACK.", "CNL."], correct: 3 },
-            { theme: "Système TOPSKY", question: "139. To toggle the display of history dots on & off in the ASD, which button in the GIW would you use?", options: ["VEL.", "HIST.", "SRP.", "FPASD."], correct: 1 },
-            { theme: "Système TOPSKY", question: "140. To cancel the audio indication when the TIMER reaches the selected time?", options: ["press the ACK function key on the keyboard.", "left click on the TIMER field in the GIW.", "centre click on the TIMER field in the GIW.", "right click on the TIMER field in the GIW."], correct: 2 },
-            { theme: "Système TOPSKY", question: "141. A Planner Controller (PLC) can support up to how many controllers?", options: ["1.", "5.", "6.", "10."], correct: 2 },
-            { theme: "Système TOPSKY", question: "142. To create a flight plan route for a FDR by clicking on reporting points on the ASD, which button in the Flight Plan window would you use?", options: ["CRE.", "CRTE.", "MOD.", "RTE."], correct: 1 },
-            { theme: "Système TOPSKY", question: "143. The SSR Code filters shall be overridden by:", options: ["selecting the QLK ALL function.", "selecting the SSR ALL function.", "none of the above.", "all of the above."], correct: 2 },
-            { theme: "Système TOPSKY", question: "144. To graphically update the position of a flight plan track which function key on the keyboard would you use?", options: ["TXA.", "ICM.", "IQL.", "UPR."], correct: 3 },
-            { theme: "Système TOPSKY", question: "145. When a track label under your jurisdiction displays an alert, what is displayed at the corresponding electronic strip?", options: ["the border and callsign of the strip is displayed in alert colour.", "the callsign and CFL of the strip is displayed in alert colour.", "the CFL and border of the strip is displayed in alert colour.", "the border, callsign and CFL of the strip is displayed in alert colour."], correct: 3 },
-            { theme: "Système TOPSKY", question: "146. If the title bar of a window is red, what does it mean?", options: ["The window is displaying wrong information.", "The controller has input information that is wrong and must be corrected.", "The window is covering a track displaying an emergency alert.", "Too many windows are opened."], correct: 2 },
-            { theme: "Système TOPSKY", question: "147. What is displayed at your position if you are sending an ICM?", options: ["an up arrow symbol.", "a down arrow symbol.", "an up arrow symbol with a line of descriptive text to the right of the symbol.", "a down arrow symbol with a line of descriptive text to the right of the symbol."], correct: 2 },
-            { theme: "Système TOPSKY", question: "148. Which of the following levels is not displayed in a Flight Plan track?", options: ["MCL.", "PRL.", "CFL.", "RRL."], correct: 1},
-            { theme: "Système TOPSKY", question: "149. If the attitude indicator in a radar track is “>”, it means that the flight is?", options: ["climbing.", "descending.", "holding.", "in level flight."], correct: 3 },
-            { theme: "Système TOPSKY", question: "150. When the HOLDING function has been initiated for a FDR?", options: ["only the flight plan track is frozen.", "only the Holding strip window is displayed.", "the flight plan track will perform a holding pattern at the designated position.", "the flight plan track is frozen & the Holding strip window is displayed."], correct: 3 },
-            { theme: "Altimétrie", question: "151. Quelle est la définition de l'altitude de transition (TA) ?", options: ["L'altitude à ou au-dessous de laquelle la position verticale est donnée en altitudes QNH", "L'altitude à partir de laquelle on passe obligatoirement au calage 1013.25 hPa en montée", "La surface isobare correspondant à la pression standard", "L'altitude minimale de sécurité en route"], correct: 1 },
-            { theme: "Altimétrie", question: "152. En vol au calage standard (1013 hPa), si vous traversez une zone de basse pression (dépression), votre altitude réelle par rapport au sol va :", options: ["Augmenter", "Diminuer", "Rester strictement identique", "Dépendre uniquement de la température au sol"], correct: 1 },
-            { theme: "Altimétrie", question: "153. Qu'indique un altimètre calé au QFE ?", options: ["L'altitude de l'aéronef par rapport au niveau moyen de la mer", "Le niveau de vol (Flight Level)", "La hauteur de l'aéronef par rapport au point de référence de l'aérodrome", "La pression atmosphérique standard"], correct: 2 },
-            { theme: "Altimétrie", question: "154. Lors du passage de l'altitude de transition vers un niveau de vol, quel calage altimétrique doit être affiché ?", options: ["Le QNH local", "Le QFE de la piste en service", "Le calage standard 1013.25 hPa", "Le calage de la région d'information de vol (RFI)"], correct: 2 },
-            { theme: "Altimétrie", question: "155. Par température très inférieure à la température standard ISA, l'altitude vraie d'un aéronef est :", options: ["Plus basse que l'altitude indiquée", "Plus haute que l'altitude indiquée", "Égale à l'altitude indiquée", "Indépendante des variations de température"], correct: 1 },
-            { theme: "Altimétrie", question: "156. Quelle est la valeur standard du gradient de pression aux basses couches de l'atmosphère ?", options: ["1 hPa pour 100 pieds", "1 hPa pour 28 pieds", "2 hPa pour 1000 pieds", "1 hPa pour 50 pieds"], correct: 1 },
-            { theme: "Altimétrie", question: "157. Qu'est-ce que l'épaisseur de la couche de transition ?", options: ["Elle est toujours d'une valeur fixe de 1000 pieds", "La distance verticale séparant l'altitude de transition du niveau de transition", "La zone d'incertitude liée aux turbulences de sillage", "L'espace situé sous l'altitude minimale de guidage"], correct: 1 },
-            { theme: "Altimétrie", question: "158. Si un pilote omet de passer au QNH en descente sous la couche de transition, quel est le risque principal ?", options: ["Un dépassement de la vitesse structurale VNE", "Une erreur de lecture menant à un risque d'impact sans perte de contrôle (CFIT)", "Une panne de transpondeur Mode C", "Une perte de séparation radar verticale uniquement au-dessus du FL100"], correct: 1 },
-            { theme: "Séparations", question: "159. En espace aérien contrôlé, quelle est la séparation verticale standard minimale applicable entre deux aéronefs IFR sous le FL290 ?", options: ["500 pieds", "1000 pieds", "2000 pieds", "1500 pieds"], correct: 1 },
-            { theme: "Séparations", question: "160. Qu'est-ce que l'espace RVSM (Reduced Vertical Separation Minimum) ?", options: ["Une réduction de la séparation à 500 pieds en zone terminale TMA", "Une séparation verticale réduite à 1000 pieds entre le FL290 et le FL410 inclus", "Une norme de séparation horizontale basée sur la performance GNSS", "L'interdiction des vols VFR au-dessus du FL195"], correct: 1 },
-            { theme: "Séparations", question: "161. Quelle est la séparation radar horizontale minimale standard (en route) appliquée par l'ATC en l'absence de contraintes spécifiques ?", options: ["3 milles nautiques (NM)", "5 milles nautiques (NM)", "10 milles nautiques (NM)", "2.5 milles nautiques (NM)"], correct: 1 },
-            { theme: "Séparations", question: "162. En approche, quelle est la séparation minimale de sillage requise derrière un aéronef 'Heavy' pour un aéronef 'Medium' qui le suit sur la même trajectoire ?", options: ["3 NM", "4 NM", "5 NM", "6 NM"], correct: 2 },
-            { theme: "Séparations", question: "163. Deux aéronefs IFR non-radar au même niveau de vol suivent la même route. Quelle est la séparation temporelle minimale requise en environnement classique ?", options: ["5 minutes", "10 minutes", "15 minutes", "20 minutes"], correct: 1 },
-            { theme: "Séparations", question: "164. La séparation visuelle par le pilote en espace de classe D décharge-t-elle le contrôleur de sa responsabilité de espacement ?", options: ["Oui, totalement et de manière permanente", "Non, l'ATC conserve la responsabilité de fournir des informations d'alerte de trafic", "Oui, mais uniquement pour les vols de nuit", "Non, car les séparations en classe D sont purement automatisées"], correct: 1 },
-            { theme: "Séparations", question: "165. Quelle est la séparation verticale minimale requise si l'un des deux aéronefs présente un transport de matières dangereuses ou un statut d'État non RVSM au-dessus du FL290 ?", options: ["1000 pieds", "1500 pieds", "2000 pieds", "4000 pieds"], correct: 2 },
-            { theme: "Séparations", question: "166. Lors d'approches parallèles indépendantes sur deux pistes espacées de plus de 1310m, la séparation radar minimale initiale est de :", options: ["1.0 NM", "2.0 NM", "3.0 NM", "5.0 NM"], correct: 3.0 },
-            { theme: "GRF (Global Report Format)", question: "167. Dans le système GRF, quel est l'indicateur principal transmis aux équipages pour évaluer l'état de surface d'une piste ?", options: ["Le coefficient de friction brut Mu", "Le Runway Condition Code (RWYCC)", "L'épaisseur exacte d'eau en millimètres", "L'indice de freinage estimé par la tour"], correct: 1 },
-            { theme: "GRF (Global Report Format)", question: "168. Quelle est l'échelle numérique des codes d'état de piste (RWYCC) dans le GRF ?", options: ["De 1 à 10", "De 0 à 5", "De 0 à 6", "De A à G"], correct: 2 },
-            { theme: "GRF (Global Report Format)", question: "169. Un RWYCC de valeur '6' signifie que l'état de la piste est :", options: ["Sec (Dry)", "Mouillé (Wet)", "Contaminé par de la neige fondante", "Glissant lorsque mouillé"], correct: 1 },
-            { theme: "GRF (Global Report Format)", question: "170. Comment la piste est-elle divisée géométriquement pour l'attribution des trois codes RWYCC (ex: 5/5/2) ?", options: ["En deux moitiés égales", "En trois tiers égaux (Seuil, Milieu, Fin)", "En fonction des intersections de taxiways", "Selon la zone d'impact principale des trains d'atterrissage"], correct: 1 },
-            { theme: "GRF (Global Report Format)", question: "171. Quelle épaisseur minimale d'eau stagnante caractérise une piste comme étant 'Contaminée' au sens du GRF ?", options: ["Plus de 1 mm", "Plus de 3 mm", "Plus de 5 mm", "Exactement 2 mm"], correct: 1 },
-            { theme: "GRF (Global Report Format)", question: "172. Quel code RWYCC est automatiquement attribué à un tiers de piste recouvert de glace compactée à une température de -6°C ?", options: ["Code 3", "Code 1", "Code 0", "Code 5"], correct: 1 },
-            { theme: "GRF (Global Report Format)", question: "173. Qui est responsable de l'évaluation initiale de la piste et de la génération du RCR (Runway Condition Report) ?", options: ["Le commandant de bord au toucher des roues", "L'exploitant d'aérodrome (Airport Operator)", "Le contrôleur d'approche radar", "Météo France via le rapport METAR"], correct: 1 },
-            { theme: "GRF (Global Report Format)", question: "174. Que signifie un code RWYCC égal à 0 ?", options: ["Efficacité de freinage maximale", "Efficacité de freinage minimale ou nulle (NIL)", "Piste glissante mais sûre", "Données indisponibles en cours de traitement"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "175. Dans quel espace aérien de classe OACI les vols VFR et IFR sont-ils tous deux contrôlés et séparés entre eux ?", options: ["Classe C", "Classe E", "Classe A", "Classe B"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "176. Quelle est la vitesse maximale indiquée (IAS) autorisée sous le niveau de vol 100 (FL100) en espace de classe E, sauf dérogation ?", options: ["210 nœuds", "250 nœuds", "300 nœuds", "180 nœuds"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "177. Un aéronef en panne de radiocommunication (Doigt cassé / Panne totale) en conditions IMC doit afficher quel code transpondeur ?", options: ["7500", "7600", "7700", "2000"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "178. Quel message de détresse de l'OACI possède la priorité absolue sur toutes les autres communications radio ?", options: ["PAN PAN", "SECURITE", "MAYDAY", "ALERTE TRAFIC"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "179. Quelle est la portée latérale par défaut d'une zone de contrôle d'aérodrome appelée CTR ?", options: ["Elle s'étend du sol jusqu'à une hauteur définie (souvent 3000ft ASL)", "De 3000ft jusqu'au FL195", "Un rayon fixe de 15 NM autour du VOR", "L'espace englobant uniquement les voies de circulation"], correct: 3 },
-            { theme: "Circulation Aérienne", question: "180. Un plan de vol IFR déposé en l'air (AFIL) doit être transmis au moins combien de temps avant l'heure d'entrée prévue dans l'espace contrôlé ?", options: ["5 minutes", "10 minutes", "30 minutes", "60 minutes"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "181. En espace de classe G, les services d'approche fournissent aux vols IFR :", options: ["Un service de contrôle d'approche", "Un service d'information de vol et d'alerte", "Une séparation stricte par rapport aux VFR", "Une assignation obligatoire de cap"], correct: 1 },
-            { theme: "Circulation Aérienne", question: "182. Que signifie le terme 'Air traffic control clearance' (Clairance ATC) ?", options: ["Une prévision météo sur l'aérodrome", "Une autorisation pour un aéronef de manœuvrer selon les conditions spécifiées par un organe de contrôle", "Une taxe d'atterrissage acquittée", "La confirmation de la fermeture du plan de vol"], correct: 1 },
-            { theme: "Approches aux instruments", question: "183. Dans une approche ILS de catégorie I (CAT I), quelle est la hauteur de décision (DH) minimale standard ?", options: ["100 pieds", "150 pieds", "200 pieds", "350 pieds"], correct: 2 },
-            { theme: "Approches aux instruments", question: "184. Quelle est la fonction principale du 'Localizer' (LOC) dans un système ILS ?", options: ["Fournir le guidage vertical de descente", "Donner la distance restante par rapport au seuil de piste", "Fournir le guidage horizontal par rapport à l'axe de piste", "Indiquer l'angle d'attaque optimal"], correct: 2 },
-            { theme: "Approches aux instruments", question: "185. Que signifie l'acronyme PBN dans le contexte moderne des trajectoires d'approche ?", options: ["Pilot Based Navigation", "Performance-Based Navigation", "Primary Beacon Network", "Precision Barometric Network"], correct: 1 },
-            { theme: "Approches aux instruments", question: "186. Une approche notée RNP APCH nécessite une spécification de précision de navigation de combien de NM dans la section finale ?", options: ["1.0 NM", "0.3 NM", "0.1 NM", "2.0 NM"], correct: 1 },
-            { theme: "Approches aux instruments", question: "187. Lors d'une approche de non-précision (NPA), quel point géométrique marque le début de la trajectoire d'approche manquée si les références visuelles ne sont pas acquises ?", options: ["Le FAF (Final Approach Fix)", "Le MAPt (Missed Approach Point)", "Le IAF (Initial Approach Fix)", "Le point de toucher des roues"], correct: 1 },
-            { theme: "Approches aux instruments", question: "188. Quelle est la valeur standard de la pente de descente (Glide Path) d'un ILS exprimée en degrés ?", options: ["2.5 degrés", "3.0 degrés", "3.5 degrés", "4.0 degrés"], correct: 1 },
-            { theme: "Approches aux instruments", question: "189. Dans une approche LNAV/VNAV, le guidage vertical est assuré par :", options: ["Un émetteur Glide Slope au sol", "Le système altimétrique barométrique de bord (Baro-VNAV) ou SBAS", "Le radar primaire de l'approche", "Les indications de la tour de contrôle"], correct: 1 },
-            { theme: "Approches aux instruments", question: "190. Que signifie le terme 'MAPT' dans les publications d'information aéronautique (AIP) ?", options: ["Minimum Altitude for Parking and Taxi", "Missed Approach Point", "Maximum Air Speed Protocol Terminal", "Marker Point Beacon"], correct: 1 }
+            {theme: "Circulation Aérienne", question: "1. La clairance initiale au départ comprend :", options: ["L'autorisation de roulage et de décollage;", "La clairance de départ et la clairance de décollage;", "L'autorisation de décollage et le SID;", "La clairance de départ et la clairance de route;"], correct: 3 },
+            {theme: "Circulation Aérienne", question: "2. La clairance initiale d'arrivée doit comprise entre autre :", options: ["l'altitude de l'aérodrome d'arrivée;", "l'altitude minimale de secteur;", "la piste en service et la procédure prévue;", "la piste en service et les procédures disponibles."], correct: 2 },
+            {theme: "Circulation Aérienne", question: "3. La clairance initiale à l'arrivée est délivrée:", options: ["Avant toute pénétration dans un espace arien;", "Avant toute pénétration en espace aérien contrôlé;", "Dès le premier contact;", "Dès le début descente des aéronefs à l'arrivée;"], correct: 1 },
+            {theme: "Circulation Aérienne", question: "4. La clairance de route est élaborée:", options: ["Uniquement sur demande du contrôleur chargé du contrôle d'approche;", "Par l'organisme chargé du contrôle régional;", "Par l'organisme chargé du contrôle d'approche;", "Par l'organisme chargé du contrôle d'aérodrome."], correct: 1 },
+            {theme: "Circulation Aérienne", question: "5. La clairance de route est élaborée par:", options: ["L'organisme chargé du contrôle d'approche;", "Le centre d'information de vol (FIC);", "Le centre de contrôle régional (ACC);", "La tour de contrôle en collaboration avec les autres organismes."], correct: 2 }
         ];
-const QUESTIONS_TO_PLAY = 10;
-let quizData = [];
-let currentQuestionIndex = 0;
-let score = 0;
-let answered = false;
-let isQuizActive = false;
-let userErrors = [];
-const TOTAL_TIME_SECONDS = 120 * 60; // 120 Minutes
- 
-let timeRemaining = TOTAL_TIME_SECONDS;
-let timerInterval = null;
 
-const mainContainer = document.getElementById('main-container');
-const quizScreen = document.getElementById('quiz-screen');
-const resultScreen = document.getElementById('result-screen');
-const reviewScreen = document.getElementById('review-screen');
-const cheatScreen = document.getElementById('cheat-screen');
-const questionNumberEl = document.getElementById('question-number');
-const questionThemeEl = document.getElementById('question-theme');
-const questionTextEl = document.getElementById('question-text');
-const optionsContainer = document.getElementById('options-container');
-const nextBtn = document.getElementById('next-btn');
-const prevBtn = document.getElementById('prev-btn');
-const progressBar = document.getElementById('progress-bar');
-const finalScoreEl = document.getElementById('final-score');
-const reviewBtn = document.getElementById('review-btn');
-const restartBtn = document.getElementById('restart-btn');
-const resumeBtn = document.getElementById('resume-btn');
-const backToResultsBtn = document.getElementById('back-to-results-btn');
-const errorsListEl = document.getElementById('errors-list');
-const globalTimerEl = document.getElementById('global-timer');
+        const QUESTIONS_TO_PLAY = 5;
+        let quizData = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let isQuizActive = false;
+        let userErrors = [];
+        const TOTAL_TIME_SECONDS = 120 * 60; // 120 Minutes
+        let timeRemaining = TOTAL_TIME_SECONDS;
+        let timerInterval = null;
+        let ipPublique = "Inconnue (Bloquée/Hors-ligne)";
 
-function shuffle(array) {
-    return [...array].sort(() => 0.5 - Math.random());
-}
+        // Eléments HTML
+        const mainContainer = document.getElementById('main-container');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const reviewScreen = document.getElementById('review-screen');
+        const cheatScreen = document.getElementById('cheat-screen');
+        const questionNumberEl = document.getElementById('question-number');
+        const questionThemeEl = document.getElementById('question-theme');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const finalScoreEl = document.getElementById('final-score');
+        const reviewBtn = document.getElementById('review-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const resumeBtn = document.getElementById('resume-btn');
+        const backToResultsBtn = document.getElementById('back-to-results-btn');
+        const errorsListEl = document.getElementById('errors-list');
+        const globalTimerEl = document.getElementById('global-timer');
 
-function startQuiz(){
-    quizData = shuffle(originalQuizData).slice(0, QUESTIONS_TO_PLAY);
-    quizData.forEach(q => q.userSelected = null);
-    currentQuestionIndex = 0;
-    score = 0;
-    userErrors = []; // Correction syntaxe
-    timeRemaining = TOTAL_TIME_SECONDS;
-    isQuizActive = true;
-    
-    quizScreen.classList.remove('hidden');
-    resultScreen.classList.add('hidden');
-    reviewScreen.classList.add('hidden');
-    cheatScreen.classList.add('hidden');
-    mainContainer.classList.remove('large');
-    
-    clearInterval(timerInterval);
-    startTimer();
-    loadQuestion();
-}
-
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeRemaining--;
-        const hours = Math.floor(timeRemaining / 3600);
-        const minutes = Math.floor((timeRemaining % 3600) / 60);
-        const seconds = timeRemaining % 60;
-        
-        globalTimerEl.innerText = `${hours}:${minutes < 10 ? '0':''}${minutes}:${seconds < 10 ? '0':''}${seconds}`;
-        
-        if (timeRemaining <= 300){
-            globalTimerEl.classList.add('alert');
-        } else {
-            globalTimerEl.classList.remove('alert');
+        // Récupération de l'IP dès le départ via l'API JSON officielle
+        async function recupererIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                if (response.ok) {
+                    const data = await response.json();
+                    ipPublique = data.ip;
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération de l'IP :", error);
+            }
         }
-        
-        if(timeRemaining <= 0){
-            handleTimeUp();
+        recupererIP();
+
+        function shuffle(array) {
+            return [...array].sort(() => 0.5 - Math.random());
         }
-    }, 1000);
-}
 
-function handleTimeUp(){
-    clearInterval(timerInterval);
-    isQuizActive = false;
-    showResults(true);
-}
-
-function loadQuestion(){
-    optionsContainer.innerHTML = '';
-    const currentQuiz = quizData[currentQuestionIndex]; // Correction de l'accès au tableau
-    
-    questionNumberEl.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
-    questionThemeEl.innerText = currentQuiz.theme;
-    questionTextEl.innerText = currentQuiz.question;
-    progressBar.style.width = `${(currentQuestionIndex / quizData.length) * 100}%`;
-    
-    if (currentQuestionIndex === 0) {
-        prevBtn.classList.add('hidden');
-    } else {
-        prevBtn.classList.remove('hidden');
-    }
-    
-    if(currentQuestionIndex === quizData.length - 1) {
-        nextBtn.innerText = "Terminer le test";
-    } else {
-        nextBtn.innerText = "Question suivante";
-    }
-    
-    currentQuiz.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.innerText = option;
-        button.className = "option-btn";
-        
-        if (currentQuiz.userSelected === index){
-            button.style.borderColor = "#6366f1";
-            button.style.backgroundColor = "rgba(99, 102, 241, 0.2)";
+        function startQuiz(){
+            quizData = shuffle(originalQuizData).slice(0, QUESTIONS_TO_PLAY);
+            quizData.forEach(q => q.userSelected = null);
+            currentQuestionIndex = 0;
+            score = 0;
+            userErrors = [];
+            timeRemaining = TOTAL_TIME_SECONDS;
+            isQuizActive = true;
+            
+            quizScreen.classList.remove('hidden');
+            resultScreen.classList.add('hidden');
+            reviewScreen.classList.add('hidden');
+            cheatScreen.classList.add('hidden');
+            mainContainer.classList.remove('large');
+            
+            clearInterval(timerInterval);
+            startTimer();
+            loadQuestion();
         }
-        
-        button.addEventListener('click', () => selectOption(index));
-        optionsContainer.appendChild(button);
-    });
-}
 
-function selectOption(selectedIndex) {
-    const currentQuiz = quizData[currentQuestionIndex]; // Correction ici aussi
-    currentQuiz.userSelected = selectedIndex;
-    
-    const buttons = optionsContainer.querySelectorAll('.option-btn');
-    buttons.forEach((btn, idx) => {
-        if (idx === selectedIndex) {
-            btn.style.borderColor = "#6366f1";
-            btn.style.backgroundColor = "rgba(99, 102, 241, 0.2)";
-        } else {
-            btn.style.borderColor = "#334155";
-            btn.style.backgroundColor = "#1e293b";
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                if (timeRemaining < 0) timeRemaining = 0;
+
+                const hours = Math.floor(timeRemaining / 3600);
+                const minutes = Math.floor((timeRemaining % 3600) / 60);
+                const seconds = timeRemaining % 60;
+                
+                globalTimerEl.innerText = `${hours}:${minutes < 10 ? '0':''}${minutes}:${seconds < 10 ? '0':''}${seconds}`;
+
+                if (timeRemaining <= 300){
+                    globalTimerEl.classList.add('alert');
+                } else {
+                    globalTimerEl.classList.remove('alert');
+                }
+                
+                if(timeRemaining <= 0){
+                    handleTimeUp();
+                }
+            }, 1000);
         }
-    });
-}
 
-nextBtn.addEventListener('click', () => {
-    if (currentQuestionIndex < quizData.length - 1) {
-        currentQuestionIndex++;
-        loadQuestion();
-    } else {
-        const confirmSubmit = confirm("Êtes-vous sûr de vouloir terminer le test et soumettre vos réponses ?");
-        if (!confirmSubmit) return;
-        
-        score = 0;
-        userErrors = []; // Correction syntaxe
-        
-        quizData.forEach(q => {
-            if (q.userSelected === q.correct) {
-                score++;
+        function handleTimeUp(){
+            clearInterval(timerInterval);
+            isQuizActive = false;
+            showResults(true);
+        }
+
+        function loadQuestion(){
+            optionsContainer.innerHTML = '';
+            const currentQuiz = quizData[currentQuestionIndex];
+            
+            questionNumberEl.innerText = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+            questionThemeEl.innerText = currentQuiz.theme;
+            questionTextEl.innerText = currentQuiz.question;
+            progressBar.style.width = `${(currentQuestionIndex / quizData.length) * 100}%`;
+            
+            if (currentQuestionIndex === 0) {
+                prevBtn.classList.add('hidden');
             } else {
-                userErrors.push({
-                    question: q.question,
-                    theme: q.theme,
-                    options: q.options,
-                    correct: q.correct,
-                    selected: q.userSelected !== null ? q.userSelected : -1
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if(currentQuestionIndex === quizData.length - 1) {
+                nextBtn.innerText = "Terminer le test";
+            } else {
+                nextBtn.innerText = "Question suivante";
+            }
+            
+            currentQuiz.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.className = "option-btn";
+                
+                if (currentQuiz.userSelected === index){
+                    button.style.borderColor = "#6366f1";
+                    button.style.backgroundColor = "rgba(99, 102, 241, 0.2)";
+                }
+                
+                button.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectOption(selectedIndex) {
+            const currentQuiz = quizData[currentQuestionIndex];
+            currentQuiz.userSelected = selectedIndex;
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+            buttons.forEach((btn, idx) => {
+                if (idx === selectedIndex) {
+                    btn.style.borderColor = "#6366f1";
+                    btn.style.backgroundColor = "rgba(99, 102, 241, 0.2)";
+                } else {
+                    btn.style.borderColor = "#334155";
+                    btn.style.backgroundColor = "#1e293b";
+                }
+            });
+        }
+
+        function showResults(timeUp = false) {
+            isQuizActive = false;
+            clearInterval(timerInterval);
+
+            const chaineScoreFinal = `${score}/${quizData.length}`;
+            finalScoreEl.innerText = chaineScoreFinal;
+            
+            quizScreen.classList.add('hidden');
+            cheatScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            // Détection OS et Navigateur pour le rapport d'envoi
+            const agent = navigator.userAgent;
+            let systeme = "Inconnu";
+            if (agent.indexOf("Windows") !== -1) systeme = "Windows";
+            else if (agent.indexOf("Mac") !== -1) systeme = "macOS";
+            else if (/Android/.test(agent)) systeme = "Android";
+            else if (/iPhone|iPad/.test(agent)) systeme = "iOS";
+            else if (agent.indexOf("Linux") !== -1) systeme = "Linux";
+
+            let navigateur = "Inconnu";
+            if (agent.indexOf("Firefox") !== -1) navigateur = "Firefox";
+            else if (agent.indexOf("SamsungBrowser") !== -1) navigateur = "Samsung Browser";
+            else if (agent.indexOf("Opera") !== -1 || agent.indexOf("OPR") !== -1) navigateur = "Opera";
+            else if (agent.indexOf("Edge") !== -1 || agent.indexOf("Edg") !== -1) navigateur = "Edge";
+            else if (agent.indexOf("Chrome") !== -1) navigateur = "Chrome";
+            else if (agent.indexOf("Safari") !== -1) navigateur = "Safari";
+
+            const variablesEmail = {
+                score: chaineScoreFinal,
+                ip_address: ipPublique,
+                os_system: systeme,
+                browser: navigateur,
+                language: navigator.language,
+                date: new Date().toLocaleString('fr-FR')
+            };
+
+            // Envoi immédiat des résultats par e-mail
+            emailjs.send("service_ljd8kpd", "template_1rfg2o8", variablesEmail)
+                .then(() => console.log("Rapport candidat envoyé avec succès !"))
+                .catch((err) => console.error("Échec de l'envoi EmailJS :", err));
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                const confirmSubmit = confirm("Êtes-vous sûr de vouloir terminer le test et soumettre vos réponses ?");
+                if (!confirmSubmit) return;
+                
+                score = 0;
+                userErrors = [];
+                
+                quizData.forEach(q => {
+                    if (q.userSelected === q.correct) {
+                        score++;
+                    } else {
+                        userErrors.push({
+                            question: q.question,
+                            theme: q.theme,
+                            options: q.options,
+                            correct: q.correct,
+                            selected: q.userSelected !== null ? q.userSelected : -1
+                        });
+                    }
                 });
+                
+                showResults(false);
             }
         });
-        
-        isQuizActive = false;
-        clearInterval(timerInterval);
-        showResults(false);
-    }
-});
 
-prevBtn.addEventListener('click', () => {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        loadQuestion();
-    }
-});
-async function recupererIP() {
-    try {
-        const response = await fetch('https://ipify.org');
-        if (!response.ok) throw new Error('Erreur réseau');
-        
-        const data = await response.json();
-        console.log("Votre IP est :", data.ip);
-        window.userIP = data.ip; // Optionnel : sauvegarde de l'IP
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        });
 
-    } catch (erreur) {
-        console.error("Erreur lors de la récupération de l'IP :", erreur);
-    } finally {
-        // Cette ligne s'exécute QUOI QU'IL ARRIVE pour ne pas bloquer l'utilisateur
-        passerALaSuite();
-    }
-}
+        // Détection du changement d'onglet (Anti-triche)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isQuizActive) {
+                clearInterval(timerInterval);
+                quizScreen.classList.add('hidden');
+                cheatScreen.classList.remove('hidden');
+                timeRemaining = Math.max(0, timeRemaining - 300); // Pénalité de 5 minutes
+            }
+        });
 
-function passerALaSuite() {
-    // 1. Cibler les éléments HTML de votre page
-    const cheatScreen = document.getElementById('cheat-screen');
-    const quizScreen = document.getElementById('quiz-screen');
+        resumeBtn.addEventListener('click', () => {
+            if (timeRemaining <= 0) {
+                handleTimeUp();
+            } else {
+                cheatScreen.classList.add('hidden');
+                quizScreen.classList.remove('hidden');
+                startTimer();
+            }
+        });
 
-    // 2. Gestion de l'affichage (on retire/ajoute la classe 'hidden')
-    if (cheatScreen) {
-        cheatScreen.classList.add('hidden'); // On s'assure que cet écran est caché
-    }
-    
-    if (quizScreen) {
-        quizScreen.classList.remove('hidden'); // On affiche enfin le questionnaire
-        console.log("Écran du quiz affiché avec succès !");
-    } else {
-        console.warn("L'élément #quiz-screen n'a pas été trouvé dans le HTML.");
-    }
-}
+        // Sécurité : Blocage du clic droit et du copier/coller
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+        document.addEventListener('copy', (e) => e.preventDefault());
 
+        window.addEventListener('beforeunload', (e) => {
+            if (isQuizActive) {
+                e.preventDefault();
+                e.returnValue = "Attention, rafraîchir cette page annulera votre session de test.";
+            }
+        });
 
+        // Affichage de la revue des erreurs
+        reviewBtn.addEventListener('click', () => {
+            resultScreen.classList.add('hidden');
+            reviewScreen.classList.remove('hidden');
+            mainContainer.classList.add('large');
+            errorsListEl.innerHTML = '';
 
-// 1. Déclaration de la variable au niveau global
-let ipPublique = "Inconnue (Bloquée/Hors-ligne)";
+            userErrors.forEach((error, idx) => {
+                const card = document.createElement('div');
+                card.className = "error-card";
+                card.innerHTML = `
+                    <div class="card-top">
+                        <span class="badge-err">Erreur #${idx + 1}</span> 
+                        <span class="badge-theme">${error.theme}</span>
+                    </div>
+                    <p style="font-size: 0.875rem; font-weight: 600; color: #fff; line-height: 1.4;">${error.question}</p>
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+                        <div class="feedback-box">
+                            <span class="feedback-title">Votre réponse :</span>
+                            ${error.selected !== -1 ? error.options[error.selected] : "Aucune réponse"}
+                        </div>
+                        <div class="feedback-box correct-ans">
+                            <span class="feedback-title">Réponse correcte :</span>
+                            ${error.options[error.correct]}
+                        </div>
+                    </div>`;
+                errorsListEl.appendChild(card);
+            });
+        });
 
-// 2. Création d'une fonction async dédiée à la récupération de l'IP
-async function recupererIP() {
-    try {
-        // Correction de l'URL pour obtenir du JSON propre
-        const response = await fetch('https://ipify.org');
-        const data = await response.json();
-        ipPublique = data.ip;
-    } catch (error) {
-        console.error("Erreur lors de la récupération de l'IP :", error);
-    }
-}
+        backToResultsBtn.addEventListener('click', () => {
+            reviewScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            mainContainer.classList.remove('large');
+        });
 
-// 3. Appel de la fonction au chargement du script
-recupererIP();
-    
-    const agent = navigator.userAgent;
-    let systeme = "Inconnu";
-    if (agent.indexOf("Windows") !== -1) systeme = "Windows";
-    else if (agent.indexOf("Mac") !== -1) systeme = "macOS";
-    else if (/Android/.test(agent)) systeme = "Android";
-    else if (/iPhone|iPad/.test(agent)) systeme = "iOS";
-    else if (agent.indexOf("Linux") !== -1) systeme = "Linux";
-    
-    // Détection améliorée du navigateur au lieu de appName
-    let navigateur = "Inconnu";
-    if (agent.indexOf("Firefox") !== -1) navigateur = "Firefox";
-    else if (agent.indexOf("SamsungBrowser") !== -1) navigateur = "Samsung Browser";
-    else if (agent.indexOf("Opera") !== -1 || agent.indexOf("OPR") !== -1) navigateur = "Opera";
-    else if (agent.indexOf("Edge") !== -1 || agent.indexOf("Edg") !== -1) navigateur = "Edge";
-    else if (agent.indexOf("Chrome") !== -1) navigateur = "Chrome";
-    else if (agent.indexOf("Safari") !== -1) navigateur = "Safari";
+        restartBtn.addEventListener('click', startQuiz);
 
-    const variablesEmail = {
-        score: chaineScoreFinal,
-        ip_address: ipPublique,
-        os_system: systeme,
-        browser: navigateur,
-        language: navigator.language,
-        date: new Date().toLocaleString('fr-FR')
-    };
- // PENSEZ À REPRENDRE ET PLACER VOS PARAMETRES EMAILJS CI-DESSOUS
- // Envoi du rapport par EmailJS
-emailjs.send("service_ljd8kpd", "template_1rfg2o8", variablesEmail)
-    .then(() => console.log("Rapport candidat envoyé avec succès !"))
-    .catch((err) => console.error("Échec de l'envoi EmailJS :", err));
-
-// Détection du changement d'onglet (Anti-triche)
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden && isQuizActive) {
-        clearInterval(timerInterval);
-        quizScreen.classList.add('hidden');
-        cheatScreen.classList.remove('hidden');
-        // Pénalité de 5 minutes (300 secondes)
-        timeRemaining = Math.max(0, timeRemaining - 300); 
-    }
-});
-
-// Reprise du quiz après avertissement de triche
-resumeBtn.addEventListener('click', () => {
-    if (timeRemaining <= 0) {
-        handleTimeUp(); // Fin du temps si la pénalité a épuisé le chrono
-    } else {
-        cheatScreen.classList.add('hidden');
-        quizScreen.classList.remove('hidden');
-        startTimer();
-    }
-});
-
-// Sécurité : Blocage du clic droit et du copier/coller
-document.addEventListener('contextmenu', (e) => e.preventDefault());
-document.addEventListener('copy', (e) => e.preventDefault());
-
-// Alerte avant de quitter ou rafraîchir la page
-window.addEventListener('beforeunload', (e) => {
-    if (isQuizActive) {
-        e.preventDefault();
-        e.returnValue = "Attention, rafraîchir cette page annulera votre session de test.";
-    }
-});
-
-// Affichage de la revue des erreurs (Template littéral corrigé)
-reviewBtn.addEventListener('click', () => {
-    resultScreen.classList.add('hidden');
-    reviewScreen.classList.remove('hidden');
-    mainContainer.classList.add('large');
-    errorsListEl.innerHTML = '';
-
-    userErrors.forEach((error, idx) => {
-        const card = document.createElement('div');
-        card.className = "error-card";
-        // Utilisation correcte des backticks (`) pour le HTML multi-ligne
-        card.innerHTML = `
-            <div class="card-top">
-                <span class="badge-err">Erreur #${idx + 1}</span> 
-                <span class="badge-theme">${error.theme}</span>
-            </div>
-            <p style="font-size: 0.875rem; font-weight: 600; color: #fff; line-height: 1.4;">${error.question}</p>
-            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
-                <div class="feedback-box">
-                    <span class="feedback-title">Votre réponse :</span>
-                    ${error.selected !== -1 ? error.options[error.selected] : "Aucune réponse"}
-                </div>
-                <div class="feedback-box correct-ans">
-                    <span class="feedback-title">Réponse correcte :</span>
-                    ${error.options[error.correct]}
-                </div>
-            </div>`;
-        errorsListEl.appendChild(card);
-    });
-});
-
-// Retour à l'écran des résultats
-backToResultsBtn.addEventListener('click', () => {
-    reviewScreen.classList.add('hidden');
-    resultScreen.classList.remove('hidden');
-    mainContainer.classList.remove('large');
-});
-
-// Recommencer le quiz
-restartBtn.addEventListener('click', startQuiz);
-
-// Lancement initial du quiz
-startQuiz();
-   </script>
+        // Lancement au chargement de la page
+        startQuiz();
+    </script>
 </body>
 </html>
-
